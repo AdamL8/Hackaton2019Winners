@@ -188,7 +188,7 @@ def writeWave(id, sentences, lang):
         with open(subtitlePath, "w") as subtitle:
             subtitle.write(sentence)
 
-        response.append({"sentenceId":index, "newsId": id, "dirPath": os.getcwd() +  dirPath, "wave": waveName, "text": sentence})
+        response.append({"sentenceId":index, "newsId": id, "dirPath": os.getcwd() + '/' + dirPath, "wave": waveName, "text": sentence})
         index += 1
 
     return response
