@@ -68,11 +68,12 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         auth = FirebaseAuth.getInstance();
 
         //get current user
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
 
         //if (user == null)
         {
-            startActivity(new Intent(MainActivity.this, SignInActivity.class));
+            //startActivity(new Intent(MainActivity.this, SignInActivity.class));
         }
 
         authListener = new FirebaseAuth.AuthStateListener() {
@@ -84,7 +85,6 @@ public class MainActivity extends BaseActivity implements MainMvpView,
                     // user auth state is changed - user is null
                     // launch login activity
                     startActivity(new Intent(MainActivity.this, SignInActivity.class));
-                    finish();
                 }
             }
         };
@@ -169,6 +169,9 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
         } else if (id == R.id.nav_send) {
 
+        } else if (id == R.id.nav_signout)
+        {
+            auth.signOut();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

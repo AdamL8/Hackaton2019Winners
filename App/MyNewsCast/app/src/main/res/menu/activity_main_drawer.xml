@@ -35,4 +35,12 @@
         </menu>
     </item>
 
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/nav_signout"
+                android:title="SignOut" />
+        </menu>
+    </item>
+
 </menu>

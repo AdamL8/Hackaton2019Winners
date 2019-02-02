@@ -121,7 +121,7 @@ public class SignInActivity extends BaseActivity implements SignInMvpView, View.
     protected void onDestroy() {
         super.onDestroy();
 
-        mSignInPresenter.detachView();
+        //mSignInPresenter.detachView();
     }
 
     // [END onactivityresult]
@@ -144,7 +144,8 @@ public class SignInActivity extends BaseActivity implements SignInMvpView, View.
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            //updateUI(user);
+                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -207,6 +208,7 @@ public class SignInActivity extends BaseActivity implements SignInMvpView, View.
 
             findViewById(R.id.signInButton).setVisibility(View.GONE);
             findViewById(R.id.signOutAndDisconnect).setVisibility(View.VISIBLE);
+
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
