@@ -4,8 +4,9 @@ import time
 import logging
 import threading
 import requests
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 import schedule
+from tts import tts
 
 DEBUG_MODE = 'DEBUG' in os.environ
 
@@ -13,14 +14,14 @@ logging.basicConfig()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG if DEBUG_MODE else logging.WARNING)
 
-PORT = 80
+PORT = 5000 if DEBUG_MODE else 80
 
 CBC_BASE_URL = "https://www.cbc.ca/aggregate_api/v1/"
 RADIO_CAN_BASE_URL = "https://services.radio-canada.ca/hackathon/neuro/v1/"
 
 RADIO_CAN_API_KEY = "&client_key=31b2bb0e-85ec-4406-9b22-31c93d7e75f9"
 
-CBC_ITEMS = CBC_BASE_URL + "items?page="
+CBC_ITEMS = CBC_BASE_URL + "items/?type=story&page="
 RADIO_CAN_NEWS = RADIO_CAN_BASE_URL + "most-popular-content/radcan-news?pageNumber="
 
 app = Flask(__name__)
@@ -48,6 +49,7 @@ def mapCbcItems(cbcElement):
         item.categoryId = cbcElement['typeAttributes']['categories'][0]['id']
     item.url = cbcElement['typeAttributes']['url']
     item.description = cbcElement['description']
+    #item.sourceId = cbcElement['sourceId']
     return item.__dict__
 
 def mapRadioCanItems(radioCanElement):
@@ -87,6 +89,24 @@ def data_thread():
         time.sleep(6)
 
 
+def cbc_parse_content_recur(body):
+    txt = ""
+    for i in body['content']:
+        if i['type'] == "text":
+            txt += i['content'] + " "
+        elif i['type'] == "html":
+            txt += cbc_parse_content_recur(i)
+    return txt
+
+def get_cbc_content(id):
+    URL = CBC_BASE_URL + "/items/" + id + "?inline=sourceDetails"
+    raw_data = requests.get(URL).json()
+    content = ""
+    if "body" in raw_data['typeAttributes']:
+        body = raw_data['typeAttributes']['body']
+        content = cbc_parse_content_recur(body)
+    return {"content": content}
+
 @app.route('/api/content/en', methods=['GET'])
 def get_tasks_en():
     return jsonify(DATA_CBC)
@@ -94,6 +114,22 @@ def get_tasks_en():
 @app.route('/api/content/fr', methods=['GET'])
 def get_tasks_fr():
     return jsonify(DATA_RADIOCAN)
+
+@app.route('/api/content/en/<id>', methods=['GET'])
+def get_content_en(id):
+    return jsonify(get_cbc_content(id))
+
+
+@app.route('/api/tts/en/<id>')
+def get_tts_en(id):
+    response = make_response(tts(get_cbc_content(id)["content"], "en"))
+    response.headers['Content-Type'] = 'audio/wav'
+    #response.headers['Content-Disposition'] = 'attachment; filename=sound.wav'
+    return response
+
+@app.route('/api/tts/fr/<id>')
+def get_tts_fr(id):
+    pass
 
 if __name__ == '__main__':
     update_data_thread = threading.Thread(target=data_thread)
