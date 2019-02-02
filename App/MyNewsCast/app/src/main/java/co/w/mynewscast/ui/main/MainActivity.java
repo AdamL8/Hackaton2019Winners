@@ -22,6 +22,10 @@ import android.view.View;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,7 +57,6 @@ public class MainActivity extends BaseActivity implements MainMvpView,
     @Inject
     MainPresenter mMainPresenter;
 
-    String test;
     private ArticleAdapter mArticleAdapter;
     private RecyclerView articleRecyclerView;
     private List<Article> articleList = new ArrayList<>();
@@ -78,8 +81,18 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
     @Override
     public void taskCompletionResult(String result) {
-        test =result;
-        Log.e("WTWTWTWTWTWTW", test);
+        Log.d("Result from articles query", result);
+
+        try {
+            JSONArray jsonArray = new JSONArray(result);
+
+            for (int i=0; i < jsonArray.length(); i++) {
+                JSONObject articleJson = jsonArray.getJSONObject(i);
+                articleList.add(new Article(articleJson));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
