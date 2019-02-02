@@ -9,6 +9,7 @@ import schedule
 import html2text
 import re
 from tts import tts
+from textToSentence import split_into_sentences
 
 
 DEBUG_MODE = 'DEBUG' in os.environ
@@ -133,6 +134,9 @@ def get_radiocan_content(id):
         content = re.sub(r'<.*?>', '', raw_data["body"]["html"].replace(">", "> ")).replace("&nbsp;", " ").replace("\n", "").replace("  ", " ")
     return {"content": content}
 
+def get_sentences(content):
+    return split_into_sentences(content)
+
 @app.route('/api/content/en', methods=['GET'])
 def get_tasks_en():
     return jsonify(DATA_CBC)
@@ -149,10 +153,12 @@ def get_content_en(id):
 def get_content_fr(id):
     return jsonify(get_radiocan_content(id))
 
-
+# TTS routes
 @app.route('/api/tts/en/<id>')
 def get_tts_en(id):
-    response = make_response(tts(get_cbc_content(id)["content"], "en"))
+    #response = make_response(tts(get_cbc_content(id)["content"], "en"))
+    sentences = get_sentences(get_cbc_content(id)["content"])
+    response = make_response(tts(sentences[0], "en"))
     response.headers['Content-Type'] = 'audio/wav'
     #response.headers['Content-Disposition'] = 'attachment; filename=sound.wav'
     return response
