@@ -7,7 +7,13 @@ import requests
 from flask import Flask, jsonify
 import schedule
 
+DEBUG_MODE = 'DEBUG' in os.environ
+
+logging.basicConfig()
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG if DEBUG_MODE else logging.WARNING)
+
+PORT = 5000
 
 CBC_BASE_URL = "https://www.cbc.ca/aggregate_api/v1/"
 RADIO_CAN_BASE_URL = "https://services.radio-canada.ca/hackathon/neuro/v1/"
@@ -58,18 +64,28 @@ def mapRadioCanItems(radioCanElement):
 def update_data():
     global DATA_CBC
     global DATA_RADIOCAN
-    logger.warning("Starting the update")
+    logger.info("Starting the update")
     temp_data_radiocan = []
     temp_data_cbc = []
     for i in range(1, 5):
         raw_cbc = requests.get(CBC_ITEMS + str(i))
         temp_data_cbc += list(map(mapCbcItems, raw_cbc.json()))
         raw_radiocan = requests.get(RADIO_CAN_NEWS + str(i) + RADIO_CAN_API_KEY)
-        temp_data_radiocan += list(map(mapRadioCanItems, raw_radiocan.json()["pagedList"]["items"]))
+        radiocan_json = raw_radiocan.json()
+        if "pagedList" in radiocan_json and "items" in radiocan_json["pagedList"]:
+            temp_data_radiocan += list(map(mapRadioCanItems, raw_radiocan.json()["pagedList"]["items"]))
         time.sleep(1)
     DATA_RADIOCAN = temp_data_radiocan
     DATA_CBC = temp_data_cbc
-    logger.warning("Data update done")
+    logger.info("Data update done")
+
+def data_thread():
+    update_data()
+    schedule.every(1).minutes.do(update_data)
+    while True:
+        schedule.run_pending()
+        time.sleep(6)
+
 
 @app.route('/api/content/en', methods=['GET'])
 def get_tasks_en():
@@ -80,7 +96,6 @@ def get_tasks_fr():
     return jsonify(DATA_RADIOCAN)
 
 if __name__ == '__main__':
-    update_data_thread = threading.Thread(target=update_data)
+    update_data_thread = threading.Thread(target=data_thread)
     update_data_thread.start()
-    schedule.every(5).minutes.do(update_data)
-    app.run(debug='DEBUG' in os.environ)
+    app.run(debug=DEBUG_MODE, host='0.0.0.0', port=PORT)
