@@ -43,6 +43,8 @@ public class MainActivity extends BaseActivity implements MainMvpView,
     @Inject
     MainPresenter mMainPresenter;
 
+    ArticleAdapter mRibotsAdapter;
+
     /**
      * Return an Intent to start this Activity.
      * triggerDataSyncOnCreate allows disabling the background sync service onCreate. Should

@@ -24,14 +24,14 @@ import co.w.mynewscast.model.Article;
 public class ArticleAdapter extends ArrayAdapter<Article> {
 
     Context context;
-    List<Article> objects;
+    List<Article> articles;
 
     public ArticleAdapter(Context context, List<Article> objects)
     {
         super(context, 0, objects);
 
         this.context = context;
-        this.objects = objects;
+        this.articles = objects;
     }
 
     public View getView(int position, View view, ViewGroup parent)
