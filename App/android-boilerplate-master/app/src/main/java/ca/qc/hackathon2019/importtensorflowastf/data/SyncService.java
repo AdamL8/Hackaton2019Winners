@@ -14,7 +14,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
-import ca.qc.hackathon2019.importtensorflowastf.BoilerplateApplication;
+import ca.qc.hackathon2019.importtensorflowastf.MyNewsCast;
 import ca.qc.hackathon2019.importtensorflowastf.data.model.Ribot;
 import ca.qc.hackathon2019.importtensorflowastf.util.AndroidComponentUtil;
 import ca.qc.hackathon2019.importtensorflowastf.util.NetworkUtil;
@@ -36,7 +36,7 @@ public class SyncService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        BoilerplateApplication.get(this).getComponent().inject(this);
+        MyNewsCast.get(this).getComponent().inject(this);
     }
 
     @Override

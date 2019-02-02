@@ -11,7 +11,7 @@ import ca.qc.hackathon2019.importtensorflowastf.injection.component.ApplicationC
 import ca.qc.hackathon2019.importtensorflowastf.injection.component.DaggerApplicationComponent;
 import ca.qc.hackathon2019.importtensorflowastf.injection.module.ApplicationModule;
 
-public class BoilerplateApplication extends Application  {
+public class MyNewsCast extends Application  {
 
     ApplicationComponent mApplicationComponent;
 
@@ -25,8 +25,8 @@ public class BoilerplateApplication extends Application  {
         }
     }
 
-    public static BoilerplateApplication get(Context context) {
-        return (BoilerplateApplication) context.getApplicationContext();
+    public static MyNewsCast get(Context context) {
+        return (MyNewsCast) context.getApplicationContext();
     }
 
     public ApplicationComponent getComponent() {

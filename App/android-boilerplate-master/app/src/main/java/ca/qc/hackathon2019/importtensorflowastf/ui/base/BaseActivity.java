@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.concurrent.atomic.AtomicLong;
 
 import timber.log.Timber;
-import ca.qc.hackathon2019.importtensorflowastf.BoilerplateApplication;
+import ca.qc.hackathon2019.importtensorflowastf.MyNewsCast;
 import ca.qc.hackathon2019.importtensorflowastf.injection.component.ActivityComponent;
 import ca.qc.hackathon2019.importtensorflowastf.injection.component.ConfigPersistentComponent;
 import ca.qc.hackathon2019.importtensorflowastf.injection.component.DaggerConfigPersistentComponent;
@@ -42,7 +42,7 @@ public class BaseActivity extends AppCompatActivity {
         if (configPersistentComponent == null) {
             Timber.i("Creating new ConfigPersistentComponent id=%d", mActivityId);
             configPersistentComponent = DaggerConfigPersistentComponent.builder()
-                    .applicationComponent(BoilerplateApplication.get(this).getComponent())
+                    .applicationComponent(MyNewsCast.get(this).getComponent())
                     .build();
             sComponentsMap.put(mActivityId, configPersistentComponent);
         }
