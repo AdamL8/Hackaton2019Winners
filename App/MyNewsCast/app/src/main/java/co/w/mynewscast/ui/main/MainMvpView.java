@@ -1,4 +1,7 @@
 package co.w.mynewscast.ui.main;
 
-public interface MainMvpView {
+import co.w.mynewscast.ui.base.MvpView;
+
+public interface MainMvpView extends MvpView {
+    void showError();
 }

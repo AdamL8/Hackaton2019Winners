@@ -1,5 +1,7 @@
 package co.w.mynewscast.ui.main;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,14 +15,36 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import co.w.mynewscast.R;
+import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import co.w.mynewscast.R;
+import co.w.mynewscast.ui.base.BaseActivity;
+import co.w.mynewscast.utils.DialogFactory;
+
+public class MainActivity extends BaseActivity implements MainMvpView,
+        NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String EXTRA_TRIGGER_SYNC_FLAG =
+            "co.w.mynewscast.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+
+    @Inject
+    MainPresenter mMainPresenter;
+
+    /**
+     * Return an Intent to start this Activity.
+     * triggerDataSyncOnCreate allows disabling the background sync service onCreate. Should
+     * only be set to false during testing.
+     */
+    public static Intent getStartIntent(Context context, boolean triggerDataSyncOnCreate) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(EXTRA_TRIGGER_SYNC_FLAG, triggerDataSyncOnCreate);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activityComponent().inject(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,6 +100,13 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mMainPresenter.detachView();
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -99,5 +130,13 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /***** MVP View methods implementation *****/
+
+    @Override
+    public void showError() {
+        DialogFactory.createGenericErrorDialog(this, getString(R.string.dialog_error_loading_main))
+                .show();
     }
 }

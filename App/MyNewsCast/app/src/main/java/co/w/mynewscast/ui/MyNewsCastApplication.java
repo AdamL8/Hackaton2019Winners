@@ -5,10 +5,12 @@ import android.content.Context;
 
 import co.w.mynewscast.BuildConfig;
 import co.w.mynewscast.injection.component.ApplicationComponent;
+import co.w.mynewscast.injection.component.DaggerApplicationComponent;
 import co.w.mynewscast.injection.module.ApplicationModule;
 import timber.log.Timber;
 
 public class MyNewsCastApplication extends Application {
+
     ApplicationComponent mApplicationComponent;
 
     @Override
