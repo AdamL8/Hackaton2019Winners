@@ -40,6 +40,7 @@ class ReturnableItem(object):
         self.title = None
         self.url = None
         self.description = None
+        self.image = None
         self.__dict__.update(kwargs)
 
 def mapCbcItems(cbcElement):
@@ -53,6 +54,10 @@ def mapCbcItems(cbcElement):
     item.url = cbcElement['typeAttributes']['url']
     item.description = cbcElement['description']
     #item.sourceId = cbcElement['sourceId']
+    for key, value in cbcElement['images'].items():
+        if "square" in key:
+            item.image = value
+            break
     return item.__dict__
 
 def mapRadioCanItems(radioCanElement):
@@ -63,7 +68,12 @@ def mapRadioCanItems(radioCanElement):
     item.categoryName = content['themeTag']['name']
     item.categoryId = content['themeTag']['id']
     item.url = content['canonicalWebLink']['href']
-    item.description = content['outOfContextTitle']
+    item.description = content['outOfContextTitle'] #change to summary if html->text works
+    if 'summaryMultimediaItem' in content and 'concreteImages' in content['summaryMultimediaItem']:
+        for i in content['summaryMultimediaItem']['concreteImages']:
+            if i['dimensionRatio'] == "1:1":
+                item.image = i['mediaLink']['href']
+                break
     return item.__dict__
 
 def update_data():
