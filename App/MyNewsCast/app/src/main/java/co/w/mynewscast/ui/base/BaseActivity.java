@@ -11,6 +11,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.inject.Inject;
+
 import co.w.mynewscast.R;
 import co.w.mynewscast.injection.component.ActivityComponent;
 import co.w.mynewscast.injection.component.ConfigPersistentComponent;
@@ -24,7 +26,7 @@ import timber.log.Timber;
  * creation of Dagger components and makes sure that instances of ConfigPersistentComponent survive
  * across configuration changes.
  */
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private static final String KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID";
     private static final AtomicLong NEXT_ID = new AtomicLong(0);

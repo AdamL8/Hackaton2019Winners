@@ -10,7 +10,7 @@ public class BasePresenter <T extends MvpView> implements Presenter<T> {
 
     @Override
     public void attachView(T mvpView) {
-        mMvpView = mvpView;
+        this.mMvpView = mvpView;
     }
 
     @Override

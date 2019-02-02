@@ -45,6 +45,7 @@ public class SignInActivity extends BaseActivity implements SignInMvpView, View.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google);
+
         //mSignInPresenter.attachView(this); // WHY DOES IT CRASH IF I ENABLE THIS ???
 
         // Views
