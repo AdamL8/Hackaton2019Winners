@@ -10,7 +10,7 @@ import co.w.mynewscast.injection.component.ActivityComponent;
 import co.w.mynewscast.injection.component.ConfigPersistentComponent;
 import co.w.mynewscast.injection.component.DaggerConfigPersistentComponent;
 import co.w.mynewscast.injection.module.ActivityModule;
-import co.w.mynewscast.ui.MyNewsCastApplication;
+import co.w.mynewscast.MyNewsCastApplication;
 import timber.log.Timber;
 
 /**
