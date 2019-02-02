@@ -51,13 +51,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
         // loading album cover using Glide library
         Glide.with(context).load(article.Image).into(holder.thumbnail);
-
-        /*holder.overflow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(holder.overflow);
-            }
-        });*/
     }
 
     @Override

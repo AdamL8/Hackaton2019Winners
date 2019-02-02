@@ -44,9 +44,10 @@ public class SignInActivity extends BaseActivity implements SignInMvpView, View.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activityComponent().inject(this);
         setContentView(R.layout.activity_google);
 
-        //mSignInPresenter.attachView(this); // WHY DOES IT CRASH IF I ENABLE THIS ???
+        mSignInPresenter.attachView(this);
 
         // Views
         mStatusTextView = findViewById(R.id.status);
@@ -121,7 +122,7 @@ public class SignInActivity extends BaseActivity implements SignInMvpView, View.
     protected void onDestroy() {
         super.onDestroy();
 
-        //mSignInPresenter.detachView();
+        mSignInPresenter.detachView();
     }
 
     // [END onactivityresult]
@@ -217,6 +218,4 @@ public class SignInActivity extends BaseActivity implements SignInMvpView, View.
             findViewById(R.id.signOutAndDisconnect).setVisibility(View.GONE);
         }
     }
-
-
 }
