@@ -10,7 +10,6 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
 
     @Inject
     public SignInPresenter() {
-
     }
 
     @Override
