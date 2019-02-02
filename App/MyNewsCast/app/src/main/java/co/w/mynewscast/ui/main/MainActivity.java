@@ -183,6 +183,7 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         activityComponent().inject(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.news_articles);
         setSupportActionBar(toolbar);
 
         mArticleAdapter = new ArticleAdapter(this, articleList);
