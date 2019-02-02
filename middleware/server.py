@@ -196,7 +196,15 @@ def writeWave(id, sentences, lang):
 # wav and text download
 @app.route('/audio_dump/<path:path>')
 def send_audio(path):
-    return send_from_directory('audio_dump', path)
+    path = '/' + path
+    splitted = path.split('-%%-')
+
+    splitted2 = splitted[1].split('/')
+
+    folder = splitted[0] + '-%%-' + splitted2[0]
+    fileName = splitted2[1]
+
+    return send_from_directory(folder, fileName)
 
 if __name__ == '__main__':
     print ('Debug mode is: %r' % (DEBUG_MODE) )
