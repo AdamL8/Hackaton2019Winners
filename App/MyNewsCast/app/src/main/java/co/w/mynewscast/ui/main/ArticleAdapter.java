@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import org.w3c.dom.Text;
 
@@ -21,65 +24,55 @@ import java.util.List;
 import co.w.mynewscast.R;
 import co.w.mynewscast.model.Article;
 
-public class ArticleAdapter extends ArrayAdapter<Article> {
+public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
 
     Context context;
     List<Article> articles;
 
     public ArticleAdapter(Context context, List<Article> objects)
     {
-        super(context, 0, objects);
-
         this.context = context;
         this.articles = objects;
     }
 
-    public View getView(int position, View view, ViewGroup parent)
-    {
-        ArticleCell cell = new ArticleCell();
+    @NonNull
+    @Override
+    public ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.article_item, parent, false);
 
-        LayoutInflater inflater = LayoutInflater.from(context);
-        view = inflater.inflate(R.layout.article_item, parent, false);
-
-        cell.articleImageView = (ImageView) view.findViewById(R.id.articleImageView);
-        cell.articleTitleTextView = (TextView) view.findViewById(R.id.articleTextView);
-
-        Article article = getItem(position);
-
-        if (article != null) {
-            new DownloadImageTask(cell.articleImageView).execute(article.Image);
-        }
-
-        return view;
+        return new ArticleViewHolder(itemView);
     }
 
-    private class ArticleCell
-    {
-        // Article items;
-        ImageView articleImageView;
-        TextView articleTitleTextView;
-    }
+    @Override
+    public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
+        Article article = articles.get(position);
+        holder.title.setText(article.Title);
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
+        // loading album cover using Glide library
+        Glide.with(context).load(article.Image).into(holder.thumbnail);
 
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bmp = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bmp = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
+        /*holder.overflow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupMenu(holder.overflow);
             }
-            return bmp;
-        }
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
+        });*/
+    }
+
+    @Override
+    public int getItemCount() {
+        return this.articles.size();
+    }
+
+    public class ArticleViewHolder extends RecyclerView.ViewHolder {
+        public TextView title;
+        public ImageView thumbnail;
+
+        public ArticleViewHolder(View view) {
+            super(view);
+            title = (TextView) view.findViewById(R.id.articleTextView);
+            thumbnail = (ImageView) view.findViewById(R.id.articleImageView);
         }
     }
 }

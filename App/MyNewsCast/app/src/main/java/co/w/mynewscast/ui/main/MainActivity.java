@@ -1,38 +1,48 @@
 package co.w.mynewscast.ui.main;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.io.Console;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import co.w.mynewscast.R;
+import co.w.mynewscast.model.Article;
 import co.w.mynewscast.ui.base.BaseActivity;
 import co.w.mynewscast.ui.signin.SignInActivity;
 import co.w.mynewscast.utils.DialogFactory;
+import co.w.mynewscast.utils.TaskDelegate;
 
 public class MainActivity extends BaseActivity implements MainMvpView,
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener, TaskDelegate {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
             "co.w.mynewscast.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
@@ -43,7 +53,12 @@ public class MainActivity extends BaseActivity implements MainMvpView,
     @Inject
     MainPresenter mMainPresenter;
 
-    ArticleAdapter mRibotsAdapter;
+    String test;
+    private ArticleAdapter mArticleAdapter;
+    private RecyclerView articleRecyclerView;
+    private List<Article> articleList = new ArrayList<>();
+
+    //@BindView(R.id.cardView) CardView mCardView;
 
     /**
      * Return an Intent to start this Activity.
@@ -56,15 +71,97 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         return intent;
     }
 
+    private void loadArticles()
+    {
+        new JsonTask(this).execute("http://40.76.47.167/api/content/fr");
+    }
+
+    @Override
+    public void taskCompletionResult(String result) {
+        test =result;
+        Log.e("WTWTWTWTWTWTW", test);
+    }
+
+
+    private class JsonTask extends AsyncTask<String, String, String> {
+
+        private TaskDelegate delegate;
+
+        public JsonTask(TaskDelegate delegate)
+        {
+            this.delegate = delegate;
+        }
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        protected String doInBackground(String... params) {
+
+
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+
+            try {
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+
+                InputStream stream = connection.getInputStream();
+
+                reader = new BufferedReader(new InputStreamReader(stream));
+
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
+
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line+"\n");
+                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+
+                }
+
+                return buffer.toString();
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            delegate.taskCompletionResult(result);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mMainPresenter.attachView(this);
 
+        mArticleAdapter = new ArticleAdapter(this, articleList);
+        //articleRecyclerView.setAdapter(mArticleAdapter);
+        loadArticles();
+        mMainPresenter.attachView(this);
 
         //get firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -72,8 +169,6 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         //get current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-
-        //if (user == null)
         {
             //startActivity(new Intent(MainActivity.this, SignInActivity.class));
         }
@@ -188,4 +283,5 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         DialogFactory.createGenericErrorDialog(this, getString(R.string.dialog_error_loading_main))
                 .show();
     }
+
 }
