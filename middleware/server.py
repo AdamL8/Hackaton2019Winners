@@ -4,7 +4,7 @@ import time
 import logging
 import threading
 import requests
-from flask import Flask, jsonify, make_response
+from flask import Flask, jsonify, make_response, send_from_directory
 import schedule
 import html2text
 import re
@@ -178,13 +178,25 @@ def writeWave(id, sentences, lang):
 
     index = 0
     for sentence in sentences:
-        with open(dirPath+'/wave_' + str(index)+'.wav', 'wb') as audio:
-            response.append({"sentenceId":index, "newsId": id, "dirPath": os.getcwd() +  dirPath, "wave": 'wave_' + str(index)+'.wav', "text": sentence})
+        waveName = id + '_' + str(index)+ '.wav'
+        wavePath = dirPath + '/' + waveName
+        with open(wavePath, 'wb') as audio:
             audio.write(tts(sentence, lang))
 
+        subtitleName = id + '_' + str(index) + '.txt'
+        subtitlePath = dirPath + '/' + subtitleName
+        with open(subtitlePath, "w") as subtitle:
+            subtitle.write(sentence)
+
+        response.append({"sentenceId":index, "newsId": id, "dirPath": os.getcwd() +  dirPath, "wave": waveName, "text": sentence})
         index += 1
 
     return response
+
+# wav and text download
+@app.route('/audio_dump/<path:path>')
+def send_audio(path):
+    return send_from_directory('audio_dump', path)
 
 if __name__ == '__main__':
     print ('Debug mode is: %r' % (DEBUG_MODE) )
