@@ -13,7 +13,7 @@ logging.basicConfig()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG if DEBUG_MODE else logging.WARNING)
 
-PORT = 5000
+PORT = 80
 
 CBC_BASE_URL = "https://www.cbc.ca/aggregate_api/v1/"
 RADIO_CAN_BASE_URL = "https://services.radio-canada.ca/hackathon/neuro/v1/"
