@@ -49,16 +49,41 @@
                         app:layout_collapseMode="parallax" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:gravity="center_horizontal">
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
 
                         <ImageButton
                             android:id="@+id/what_is_popular"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/android_button" />
+                            android:layout_weight="1"
+                            android:background="?android:attr/selectableItemBackgroundBorderless"
+                            android:backgroundTint="@null"
+                            android:clickable="true"
+                            android:src="@drawable/ic_whatshot_black_64dp" />
+
+                        <ImageButton
+                            android:id="@+id/newspaper"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="?android:attr/selectableItemBackgroundBorderless"
+                            android:backgroundTint="@null"
+                            android:clickable="true"
+                            android:src="@drawable/ic_newspaper_black_64dp" />
+
+                        <ImageButton
+                            android:id="@+id/categories"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="?android:attr/selectableItemBackgroundBorderless"
+                            android:backgroundTint="@null"
+                            android:clickable="true"
+                            android:src="@drawable/ic_format_list_bulleted_black_128dp" />
 
                     </LinearLayout>
                 </RelativeLayout>

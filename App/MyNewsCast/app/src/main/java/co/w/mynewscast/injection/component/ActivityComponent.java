@@ -2,6 +2,7 @@ package co.w.mynewscast.injection.component;
 
 import co.w.mynewscast.injection.PerActivity;
 import co.w.mynewscast.injection.module.ActivityModule;
+import co.w.mynewscast.ui.experience.ExperienceActivity;
 import co.w.mynewscast.ui.main.MainActivity;
 import co.w.mynewscast.ui.signin.SignInActivity;
 import dagger.Subcomponent;
@@ -17,4 +18,5 @@ public interface ActivityComponent {
 
     void inject(SignInActivity signInActivity);
 
+    void inject(ExperienceActivity experienceActivity);
 }
