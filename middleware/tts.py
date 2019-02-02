@@ -16,12 +16,21 @@ def tts(text, lang="en"):
         'Content-Type': 'application/ssml+xml',
         'X-Microsoft-OutputFormat': 'riff-24khz-16bit-mono-pcm'
     }
-    # Todo switch based of lang
+    #langs https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support
+    if lang=="en":
+        locale = "en-us"
+        locale_caps = "en-US"
+        voice_name = "Microsoft Server Speech Text to Speech Voice (en-US, Guy24KRUS)"
+    else:
+        locale="fr-ca"
+        locale_caps = "fr-CA"
+        voice_name = "Microsoft Server Speech Text to Speech Voice (fr-CA, HarmonieRUS)"
+
     xml_body = ElementTree.Element('speak', version='1.0')
-    xml_body.set('{http://www.w3.org/XML/1998/namespace}lang', 'en-us')
+    xml_body.set('{http://www.w3.org/XML/1998/namespace}lang', locale)
     voice = ElementTree.SubElement(xml_body, 'voice')
-    voice.set('{http://www.w3.org/XML/1998/namespace}lang', 'en-US')
-    voice.set('name', 'Microsoft Server Speech Text to Speech Voice (en-US, Guy24KRUS)')
+    voice.set('{http://www.w3.org/XML/1998/namespace}lang', locale_caps)
+    voice.set('name', voice_name)
     voice.text = text
     body = ElementTree.tostring(xml_body)
 
