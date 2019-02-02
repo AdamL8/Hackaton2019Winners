@@ -4,11 +4,14 @@ import time
 import logging
 import threading
 import requests
-from flask import Flask, jsonify, make_response
+from flask import Flask, jsonify, make_response, send_from_directory
 import schedule
 import html2text
 import re
 from tts import tts
+from textToSentence import split_into_sentences
+import wave
+import uuid
 
 
 DEBUG_MODE = 'DEBUG' in os.environ
@@ -133,6 +136,9 @@ def get_radiocan_content(id):
         content = re.sub(r'<.*?>', '', raw_data["body"]["html"].replace(">", "> ")).replace("&nbsp;", " ").replace("\n", "").replace("  ", " ")
     return {"content": content}
 
+def get_sentences(content):
+    return split_into_sentences(content)
+
 @app.route('/api/content/en', methods=['GET'])
 def get_tasks_en():
     return jsonify(DATA_CBC)
@@ -149,22 +155,59 @@ def get_content_en(id):
 def get_content_fr(id):
     return jsonify(get_radiocan_content(id))
 
-
+# TTS routes
 @app.route('/api/tts/en/<id>')
 def get_tts_en(id):
-    response = make_response(tts(get_cbc_content(id)["content"], "en"))
-    response.headers['Content-Type'] = 'audio/wav'
-    #response.headers['Content-Disposition'] = 'attachment; filename=sound.wav'
-    return response
+    sentences = get_sentences(get_cbc_content(id)["content"])
+    response = writeWave(id, sentences, "en")
+
+    return jsonify(response)
 
 @app.route('/api/tts/fr/<id>')
 def get_tts_fr(id):
-    response = make_response(tts(get_radiocan_content(id)["content"], "fr"))
-    response.headers['Content-Type'] = 'audio/wav'
-    #response.headers['Content-Disposition'] = 'attachment; filename=sound.wav'
+    sentences = get_sentences(get_radiocan_content(id)["content"])
+    response = writeWave(id, sentences, "fr")
+
+    return jsonify(response)
+
+def writeWave(id, sentences, lang):
+    response = []
+    dirPath = id + '-%%-' + str(uuid.uuid4())
+    if not os.path.isdir(dirPath):
+        os.makedirs(dirPath)
+
+    index = 0
+    for sentence in sentences:
+        waveName = id + '_' + str(index)+ '.wav'
+        wavePath = dirPath + '/' + waveName
+        with open(wavePath, 'wb') as audio:
+            audio.write(tts(sentence, lang))
+
+        subtitleName = id + '_' + str(index) + '.txt'
+        subtitlePath = dirPath + '/' + subtitleName
+        with open(subtitlePath, "w") as subtitle:
+            subtitle.write(sentence)
+
+        response.append({"sentenceId":index, "newsId": id, "dirPath": os.getcwd() + '/' + dirPath, "wave": waveName, "text": sentence})
+        index += 1
+
     return response
 
+# wav and text download
+@app.route('/audio_dump/<path:path>')
+def send_audio(path):
+    path = '/' + path
+    splitted = path.split('-%%-')
+
+    splitted2 = splitted[1].split('/')
+
+    folder = splitted[0] + '-%%-' + splitted2[0]
+    fileName = splitted2[1]
+
+    return send_from_directory(folder, fileName)
+
 if __name__ == '__main__':
+    print ('Debug mode is: %r' % (DEBUG_MODE) )
     update_data_thread = threading.Thread(target=data_thread)
     update_data_thread.start()
     app.run(debug=DEBUG_MODE, host='0.0.0.0', port=PORT)
