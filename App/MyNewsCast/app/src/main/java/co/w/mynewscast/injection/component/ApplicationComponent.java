@@ -5,6 +5,7 @@ import android.content.Context;
 
 import javax.inject.Singleton;
 
+import co.w.mynewscast.MyNewsCastApplication;
 import co.w.mynewscast.injection.ApplicationContext;
 import co.w.mynewscast.injection.module.ApplicationModule;
 import dagger.Component;
