@@ -96,4 +96,6 @@
 
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
+    <string name="textview">MyNewsCast</string>
+    <string name="textview2"><![CDATA[News & Articles]]></string>
 </resources>
