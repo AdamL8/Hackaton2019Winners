@@ -11,7 +11,7 @@ import numpy
 # total_duration = 10
 
 # ------- Resize effects
-def zoomInAndOut(t, speed, effect_duration, total_duration):
+def __zoomInAndOut(t, speed, effect_duration, total_duration):
     if t < effect_duration:
         return 1 + speed*t
     elif effect_duration <= t <= effect_duration*3/2:
@@ -19,13 +19,13 @@ def zoomInAndOut(t, speed, effect_duration, total_duration):
     else:
         return 1 + speed*(total_duration - t)
 
-def zoomIn(t, speed, effect_duration, total_duration):
+def __zoomIn(t, speed, effect_duration, total_duration):
     if t < effect_duration:
         return 1 + speed*t
     else:
         return 1 + speed*effect_duration
 
-def inverseZoomIn(t, speed, effect_duration, total_duration):
+def __inverseZoomIn(t, speed, effect_duration, total_duration):
     if t < effect_duration:
         return 1 + speed*(effect_duration - t)
     else:
@@ -33,7 +33,7 @@ def inverseZoomIn(t, speed, effect_duration, total_duration):
 
 
 # ------- Media generation
-def generateVideoFromImages(urls, lengthInSeconds, animSpeed, screensize2d, repeats=0):
+def _generateVideoFromImages(urls, lengthInSeconds, animSpeed, screensize2d, repeats=0):
     ims = []
     for u in urls:
         r = requests.get(u)
@@ -44,15 +44,13 @@ def generateVideoFromImages(urls, lengthInSeconds, animSpeed, screensize2d, repe
     clips = []
     i = 0
     for im in ims:
-        # clips.append(ImageClip(im).resize(width=screensize2d[0]).resize(lambda t: zoomInAndOut(t,
         if i % 2 == 0:
-            clips.append(ImageClip(im).resize(width=screensize2d[0]).resize(lambda t: zoomIn(t, 
+            clips.append(ImageClip(im).resize(width=screensize2d[0]).resize(lambda t: __zoomIn(t, 
                 animSpeed, partial_duration, partial_duration)).set_duration(partial_duration))
         else:
-            clips.append(ImageClip(im).resize(width=screensize2d[0]).resize(lambda t: inverseZoomIn(t, 
+            clips.append(ImageClip(im).resize(width=screensize2d[0]).resize(lambda t: __inverseZoomIn(t, 
                 animSpeed, partial_duration, partial_duration)).set_duration(partial_duration))
         i = i + 1
-        # clips.append(ImageClip(im).fx(resize, zoomInAndOut, method='bilinear').set_duration(total_duration))
 
     vid = concatenate_videoclips(clips)
     if repeats != 0:
@@ -63,7 +61,7 @@ def generateVideoFromImages(urls, lengthInSeconds, animSpeed, screensize2d, repe
                                 size=screensize2d)
     return vid
 
-def mixAudioAndSubtitles(video, audioPaths, sentences, videoSize):
+def _mixAudioAndSubtitles(video, audioPaths, sentences, videoSize):
     audioClips = []
     for p in audioPaths:
         audioClip = AudioFileClip(p)
@@ -84,22 +82,51 @@ def mixAudioAndSubtitles(video, audioPaths, sentences, videoSize):
     result.set_audio(audios)
     return result
 
-def writeSubtitle(video, subtitle, duration, videoSize):
-    # t = TextClip(subtitle, None, (videoSize[0]*0.9, videoSize[1]*0.2), 'transparent', 'white', 'Courier', None, 1, 'caption')
+def _generateAudioAndSubtitles(audioPaths, sentences, videoSize):
+    # Does not mix with main video, meaning this gives the audio track on subtitles purely
+    audioClips = []
+    for p in audioPaths:
+        audioClip = AudioFileClip(p)
+        audioClip = audioClip.set_duration(audioClip.duration+0.5)
+        audioClips.append(audioClip)
+    
+    i = 0
+    textClips = []
+    for a in audioClips:
+        t = TextClip(sentences[i], None, (videoSize[0]*0.9, videoSize[1]*0.2), color='white', bg_color=('transparent'), fontsize=30, method='caption')
+        t.set_duration(audioClips[i].duration)
+        textClips.append(t)
+        i = i+1
+    
+    texts = concatenate_videoclips(textClips)
+    audios = concatenate_audioclips(audioClips)
+    texts = texts.set_pos(('center','bottom'))
+    texts.set_audio(audios)
+    return texts
+
+def _writeSubtitle(video, subtitle, duration, videoSize):
     t = TextClip(subtitle, None, (videoSize[0]*0.9, videoSize[1]*0.2), color='white', bg_color=('transparent'), fontsize=30, method='caption').set_duration(duration)
-    # t = t.set_pos('center','bottom')
     result = CompositeVideoClip([video, t.set_pos(('center','bottom'))], size=videoSize)
     return result
 
-
-    
-
-
-
-def generateVideoFromImagesToFile(urls, lengthInSeconds, animSpeed, screensize2d, repeats, outputNamePathAndFormat):
-    vid = generateVideoFromImages(urls, lengthInSeconds, animSpeed, screensize2d, repeats)
+def _generateVideoFromImagesToFile(urls, lengthInSeconds, animSpeed, screensize2d, repeats, outputNamePathAndFormat):
+    vid = _generateVideoFromImages(urls, lengthInSeconds, animSpeed, screensize2d, repeats)
     vid.write_videofile(outputNamePathAndFormat, fps=24)
     return outputNamePathAndFormat
+
+
+## ------- MAIN FUNCTION
+def generateVideoAndAudioFromImagesToFile(outputFileNameAndFormat, imageUrls, audioPaths, audioTexts, videoSize=(1280,720), backgroundRepeats=0):
+    texts = _generateAudioAndSubtitles(audioPaths, audioTexts, videoSize)
+    totalLength = texts.duration
+    lengthPerImage = totalLength/len(imageUrls)
+
+    repeats = lengthPerImage // 5 # Try and keep 5 seconds per image, looping over full list of media if more
+
+    ims = _generateVideoFromImages(imageUrls, totalLength, 0.02, videoSize, repeats)
+    result = CompositeVideoClip([ims, texts], size=videoSize)
+    return result
+    # _generateVideoFromImages(imageUrls,)
 
 
 ### TESTING
