@@ -3,6 +3,8 @@ package co.w.mynewscast;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.firebase.FirebaseApp;
+
 import co.w.mynewscast.injection.component.ApplicationComponent;
 import co.w.mynewscast.injection.component.DaggerApplicationComponent;
 import co.w.mynewscast.injection.module.ApplicationModule;
