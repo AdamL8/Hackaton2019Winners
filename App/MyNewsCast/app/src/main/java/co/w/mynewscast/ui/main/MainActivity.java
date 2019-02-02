@@ -87,7 +87,6 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
     @Override
     public void taskCompletionResult(String result) {
-        Log.d("Result from articles query", result);
 
         try {
             JSONArray jsonArray = new JSONArray(result);
@@ -205,10 +204,6 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
         //get current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        {
-            //startActivity(new Intent(MainActivity.this, SignInActivity.class));
-        }
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
