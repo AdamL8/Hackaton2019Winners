@@ -70,7 +70,7 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (user == null)
+        //if (user == null)
         {
             startActivity(new Intent(MainActivity.this, SignInActivity.class));
         }
@@ -89,6 +89,9 @@ public class MainActivity extends BaseActivity implements MainMvpView,
             }
         };
 
+        /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
+         * user and hide hide any login buttons */
+        auth.addAuthStateListener(authListener);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

@@ -104,7 +104,29 @@ public class SignInActivity extends BaseActivity implements SignInMvpView, View.
             }
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.signInButton) {
+            signIn();
+        } else if (i == R.id.signOutButton) {
+            signOut();
+        } else if (i == R.id.disconnectButton) {
+            revokeAccess();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mSignInPresenter.detachView();
+    }
+
     // [END onactivityresult]
+
+    /***** MVP View methods implementation *****/
 
     // [START auth_with_google]
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -139,13 +161,15 @@ public class SignInActivity extends BaseActivity implements SignInMvpView, View.
     // [END auth_with_google]
 
     // [START signin]
-    private void signIn() {
+    @Override
+    public void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     // [END signin]
 
-    private void signOut() {
+    @Override
+    public void signOut() {
         // Firebase sign out
         mAuth.signOut();
 
@@ -159,7 +183,8 @@ public class SignInActivity extends BaseActivity implements SignInMvpView, View.
                 });
     }
 
-    private void revokeAccess() {
+    @Override
+    public void revokeAccess() {
         // Firebase sign out
         mAuth.signOut();
 
@@ -173,7 +198,8 @@ public class SignInActivity extends BaseActivity implements SignInMvpView, View.
                 });
     }
 
-    private void updateUI(FirebaseUser user) {
+    @Override
+    public void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
             mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
@@ -190,22 +216,5 @@ public class SignInActivity extends BaseActivity implements SignInMvpView, View.
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.signInButton) {
-            signIn();
-        } else if (i == R.id.signOutButton) {
-            signOut();
-        } else if (i == R.id.disconnectButton) {
-            revokeAccess();
-        }
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        mSignInPresenter.detachView();
-    }
 }

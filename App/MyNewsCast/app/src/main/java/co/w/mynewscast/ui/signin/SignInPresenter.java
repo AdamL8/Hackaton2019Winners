@@ -22,4 +22,5 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
     public void detachView() {
         super.detachView();
     }
+
 }
