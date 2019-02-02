@@ -56,9 +56,13 @@
 
                         <ImageButton
                             android:id="@+id/what_is_popular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/android_button" />
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleHeight="80%"
+                            android:scaleWidth="80%"
+                            android:background="@null"
+                            android:backgroundTint="@null"
+                            android:src="@drawable/ic_play_arrow_black_128dp" />
 
                     </LinearLayout>
                 </RelativeLayout>
