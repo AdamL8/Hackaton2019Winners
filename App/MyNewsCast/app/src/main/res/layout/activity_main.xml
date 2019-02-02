@@ -54,11 +54,11 @@
                         android:layout_centerInParent="true"
                         android:gravity="center_horizontal">
 
-                        <ImageButton
-                            android:id="@+id/what_is_popular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/android_button" />
+                        <!--<ImageButton-->
+                            <!--android:id="@+id/what_is_popular"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:src="@drawable/android_button" />-->
 
                     </LinearLayout>
                 </RelativeLayout>
