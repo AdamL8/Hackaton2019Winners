@@ -61,10 +61,12 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mMainPresenter.attachView(this);
+
 
         //get firebase auth instance
         auth = FirebaseAuth.getInstance();
-        Log.e("INSTANCE", "GOT INSTANCE");
+
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -72,11 +74,12 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         {
             startActivity(new Intent(MainActivity.this, SignInActivity.class));
         }
+
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                Log.e("User", "onAuthStateChanged");
+
                 if (user == null) {
                     // user auth state is changed - user is null
                     // launch login activity

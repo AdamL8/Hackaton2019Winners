@@ -21,12 +21,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import javax.inject.Inject;
+
 import co.w.mynewscast.R;
 import co.w.mynewscast.ui.base.BaseActivity;
 
 public class SignInActivity extends BaseActivity implements SignInMvpView, View.OnClickListener {
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
+
+    @Inject
+    SignInPresenter mSignInPresenter;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -40,6 +45,7 @@ public class SignInActivity extends BaseActivity implements SignInMvpView, View.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google);
+        //mSignInPresenter.attachView(this); // WHY DOES IT CRASH IF I ENABLE THIS ???
 
         // Views
         mStatusTextView = findViewById(R.id.status);
@@ -193,5 +199,12 @@ public class SignInActivity extends BaseActivity implements SignInMvpView, View.
         } else if (i == R.id.disconnectButton) {
             revokeAccess();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mSignInPresenter.detachView();
     }
 }
