@@ -5,7 +5,9 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Article {
+import java.io.Serializable;
+
+public class Article implements Serializable {
 
     public String CategoryName;
     public String Description;

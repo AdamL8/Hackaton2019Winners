@@ -1,5 +1,6 @@
 package co.w.mynewscast.ui.mediaplayer;
 
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -16,7 +17,9 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import co.w.mynewscast.R;
+import co.w.mynewscast.model.ActicleListSerializable;
 import co.w.mynewscast.ui.base.BaseActivity;
+import co.w.mynewscast.utils.PreferenceUtils;
 
 public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpView, View.OnClickListener {
 
@@ -34,14 +37,23 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
     private SeekBar seekbar;
 
     public static int oneTimeOnly = 0;
-    String mediaURL = "http://40.76.47.167/api/content/summary/audio/fr/1150647";
+    String mediaURLBase = "http://40.76.47.167/api/audio";
+    String mediaURL = "http://40.76.47.167/api/content/summary/audio/fr/1150647"; // default
 
     @Inject
     MediaPlayerPresenter mMediaPlayerPresenter;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        ActicleListSerializable playList = (ActicleListSerializable) intent.getExtras().getSerializable("ArticleList");
+
+        Integer id = playList.articles.get(0).Id;
+        mediaURL = String.format("%s/%s/%s", mediaURLBase, PreferenceUtils.getSelectedLanguageId(), id);
 
         activityComponent().inject(this);
         setContentView(R.layout.media_player);
