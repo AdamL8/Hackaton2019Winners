@@ -189,8 +189,6 @@ def get_summary_content_audio_en(id):
 
 @app.route('/api/content/summary/audio/fr/<id>', methods=['GET'])
 def get_summary_content_audio_fr(id):
-    print('hereeeee')
-    print('text: ', convertTextToSummary(get_radiocan_content(id)['content']))
     response = make_response(tts(convertTextToSummary(get_radiocan_content(id)['content']),"fr"))
     response.headers['Content-Type'] = 'audio/wav'
     return response
