@@ -114,6 +114,9 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
 
             //seek to the exact second of the track
             mediaPlayer.seekTo((int) timeElapsed);
+        } else {
+            timeElapsed = 0;
+            mediaPlayer.seekTo((int) timeElapsed);
         }
     }
 
@@ -124,6 +127,9 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
             timeElapsed = timeElapsed + forwardTime;
 
             //seek to the exact second of the track
+            mediaPlayer.seekTo((int) timeElapsed);
+        } else {
+            timeElapsed = finalTime;
             mediaPlayer.seekTo((int) timeElapsed);
         }
     }

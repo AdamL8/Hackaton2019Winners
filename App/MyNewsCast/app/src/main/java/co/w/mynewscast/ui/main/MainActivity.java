@@ -194,6 +194,8 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
         // Button listeners
         findViewById(R.id.newspaper).setOnClickListener(this);
+        findViewById(R.id.what_is_popular).setOnClickListener(this);
+        findViewById(R.id.categories).setOnClickListener(this);
 
         mArticleAdapter = new ArticleAdapter(this, articleList);
         articleRecyclerView = findViewById(R.id.recycler_view);
@@ -247,6 +249,10 @@ public class MainActivity extends BaseActivity implements MainMvpView,
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.newspaper) {
+            contentExperience();
+        } else if (i == R.id.what_is_popular) {
+            contentExperience();
+        } else if (i == R.id.categories) {
             contentExperience();
         }
     }
