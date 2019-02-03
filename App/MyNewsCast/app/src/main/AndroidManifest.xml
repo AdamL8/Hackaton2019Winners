@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="co.w.mynewscast">
-
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".MyNewsCastApplication"
         android:allowBackup="true"
@@ -22,6 +23,7 @@
         </activity>
         <activity android:name=".ui.signin.SignInActivity" />
         <activity android:name=".ui.experience.ExperienceActivity" />
+        <activity android:name=".ui.mediaplayer.MediaPlayerActivity" />
 
     </application>
 

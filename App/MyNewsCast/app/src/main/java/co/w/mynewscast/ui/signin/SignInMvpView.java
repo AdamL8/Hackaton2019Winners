@@ -1,6 +1,5 @@
 package co.w.mynewscast.ui.signin;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseUser;
 
 import co.w.mynewscast.ui.base.MvpView;
