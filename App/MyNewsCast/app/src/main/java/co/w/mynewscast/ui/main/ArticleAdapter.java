@@ -1,6 +1,7 @@
 package co.w.mynewscast.ui.main;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 
@@ -37,12 +43,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ArticleViewHolder holder, int position) {
         Article article = articles.get(position);
         holder.title.setText(article.Title);
 
+
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_broken_image_grey_128dp);
         // loading album cover using Glide library
-        Glide.with(context).load(article.Image).into(holder.thumbnail);
+
+        Glide.with(context).load(article.Image).apply(requestOptions).into(holder.thumbnail);
     }
 
     @Override

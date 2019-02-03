@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class ExperienceArticleAdapter extends RecyclerView.Adapter<ExperienceArt
     @Override
     public ExperienceArticleAdapter.ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.experience_item, parent, false);
+                .inflate(R.layout.content_experience, parent, false);
 
         return new ExperienceArticleAdapter.ArticleViewHolder(itemView);
     }
@@ -41,8 +42,10 @@ public class ExperienceArticleAdapter extends RecyclerView.Adapter<ExperienceArt
         Article article = articles.get(position);
         holder.title.setText(article.Title);
 
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_broken_image_grey_128dp);
         // loading album cover using Glide library
-        Glide.with(context).load(article.Image).into(holder.thumbnail);
+
+        Glide.with(context).load(article.Image).apply(requestOptions).into(holder.thumbnail);
     }
 
     @Override
