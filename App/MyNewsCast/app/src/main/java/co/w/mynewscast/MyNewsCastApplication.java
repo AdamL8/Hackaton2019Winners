@@ -2,8 +2,8 @@ package co.w.mynewscast;
 
 import android.app.Application;
 import android.content.Context;
-
-import com.google.firebase.FirebaseApp;
+import android.content.res.Configuration;
+import android.util.Log;
 
 import co.w.mynewscast.injection.component.ApplicationComponent;
 import co.w.mynewscast.injection.component.DaggerApplicationComponent;
@@ -14,6 +14,23 @@ public class MyNewsCastApplication extends Application {
 
     ApplicationComponent mApplicationComponent;
 
+    public static LocaleManager localeManager;
+
+    private final String TAG = "MyNewsCastApplication";
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        localeManager = new LocaleManager(base);
+        super.attachBaseContext(localeManager.setLocale(base));
+        Log.d(TAG, "attachBaseContext");
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        localeManager.setLocale(this);
+        Log.d(TAG, "onConfigurationChanged: " + newConfig.locale.getLanguage());
+    }
     @Override
     public void onCreate() {
         super.onCreate();
@@ -40,4 +57,6 @@ public class MyNewsCastApplication extends Application {
     public void setComponent(ApplicationComponent applicationComponent) {
         mApplicationComponent = applicationComponent;
     }
+
+
 }
