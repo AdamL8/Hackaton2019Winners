@@ -3,9 +3,6 @@ package co.w.mynewscast.utils;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,9 +14,11 @@ import java.net.URL;
 public class QueryHelper {
 
     private static String BASE_API_URL = "http://40.76.47.167/api/content";
+    private static String BASE_API_URL_INFO = "http://40.76.47.167/api/content/info";
 
     public static void getArticle(String lang, String id, TaskDelegate delegate) {
-        String queryUrl = String.format("%s/%s/%s", BASE_API_URL, lang, id);
+        String queryUrl = String.format("%s/%s/%s", BASE_API_URL_INFO, lang, id);
+
         new JsonTask(delegate).execute(queryUrl);
     }
 

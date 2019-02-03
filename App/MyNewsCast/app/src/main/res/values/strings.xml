@@ -70,4 +70,11 @@
     <string name="english">English</string>
 
     <string name="hello">Hello\n%s</string>
+    <string name="saved_list">Saved articles</string>
+    <string name="experience">Playlist</string>
+
+    <string name="queue">Saved articles</string>
+    <string name="settings">Settings</string>
+    <string name="account">Account</string>
+
 </resources>

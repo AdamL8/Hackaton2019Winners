@@ -1,14 +1,10 @@
 package co.w.mynewscast.ui.queue;
 
-import android.content.res.Resources;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,7 +15,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,8 +25,6 @@ import co.w.mynewscast.R;
 import co.w.mynewscast.model.Article;
 import co.w.mynewscast.model.ArticleFirebaseModel;
 import co.w.mynewscast.ui.base.BaseActivity;
-import co.w.mynewscast.ui.experience.ExperienceActivity;
-import co.w.mynewscast.ui.experience.ExperienceArticleAdapter;
 import co.w.mynewscast.ui.main.ArticleAdapter;
 import co.w.mynewscast.utils.QueryHelper;
 import co.w.mynewscast.utils.RecyclerViewUtils;
@@ -87,7 +80,7 @@ public class QueueActivity extends BaseActivity implements TaskDelegate {
                 ArticleFirebaseModel article = dataSnapshot.getValue(ArticleFirebaseModel.class);
                 firebaseArticleList.add(article);
 
-                Log.e(TAG, "onChildAdded:" + article.id);
+//                Log.e(TAG, "onChildAdded:" + article.id);
 
                 ArticleFirebaseModel latest = firebaseArticleList.get(firebaseArticleList.size() - 1);
                 QueryHelper.getArticle(latest.lang, latest.id, QueueActivity.this);
@@ -137,9 +130,13 @@ public class QueueActivity extends BaseActivity implements TaskDelegate {
     public void taskCompletionResult(String result) {
         if (result != null) {
 
+//            result = result.substring(1, result.length()-1);
+
             try {
                 JSONObject articleJson = new JSONObject(result);
                 queueArticleList.add(new Article(articleJson));
+
+                Log.e(TAG, "Filled a card for article " + queueArticleList.get(queueArticleList.size() - 1).Id);
 
                 mArticleAdapter.notifyItemInserted(queueArticleList.size() - 1);
             } catch (JSONException e) {
