@@ -173,23 +173,23 @@ def get_tts_fr(id):
 
 def writeWave(id, sentences, lang):
     response = []
-    dirPath = id + '-%%-' + str(uuid.uuid4())
-    if not os.path.isdir(dirPath):
-        os.makedirs(dirPath)
+
+    if not os.path.isdir(id):
+        os.makedirs(id)
 
     index = 0
     for sentence in sentences:
         waveName = id + '_' + str(index)+ '.wav'
-        wavePath = dirPath + '/' + waveName
+        wavePath = id + '/' + waveName
         with open(wavePath, 'wb') as audio:
             audio.write(tts(sentence, lang))
 
         subtitleName = id + '_' + str(index) + '.txt'
-        subtitlePath = dirPath + '/' + subtitleName
+        subtitlePath = id + '/' + subtitleName
         with open(subtitlePath, "w") as subtitle:
             subtitle.write(sentence)
 
-        response.append({"sentenceId":index, "newsId": id, "dirPath": os.getcwd() + '/' + dirPath, "wave": waveName, "text": sentence})
+        response.append({"sentenceId": index, "newsId": id, "dirPath": os.getcwd() + '/' + id, "wave": waveName, "text": sentence})
         index += 1
 
     return response
