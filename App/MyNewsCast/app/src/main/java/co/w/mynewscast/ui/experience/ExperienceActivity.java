@@ -46,9 +46,8 @@ public class ExperienceActivity extends BaseActivity implements ExperienceMvpVie
         experienceArticleAdapter = new ExperienceArticleAdapter(this, experienceArticleList);
         experienceArticleRecyclerView = findViewById(R.id.experience_list_view);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        experienceArticleRecyclerView.setLayoutManager(mLayoutManager);
         experienceArticleRecyclerView.setAdapter(experienceArticleAdapter);
+        experienceArticleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         loadArticles();
 
@@ -65,11 +64,14 @@ public class ExperienceActivity extends BaseActivity implements ExperienceMvpVie
 
         try {
             JSONArray jsonArray = new JSONArray(result);
+            int curSize = experienceArticleAdapter.getItemCount();
 
-            for (int i=0; i < jsonArray.length(); i++) {
+            for (int i = 0; i < jsonArray.length(); ++i) {
                 JSONObject articleJson = jsonArray.getJSONObject(i);
                 experienceArticleList.add(new Article(articleJson));
             }
+
+            experienceArticleAdapter.notifyItemRangeChanged(curSize, jsonArray.length());
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -34,8 +34,8 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/experience_list_view"
-        android:layout_width="fill_parent"
-        android:layout_height="510dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton" />

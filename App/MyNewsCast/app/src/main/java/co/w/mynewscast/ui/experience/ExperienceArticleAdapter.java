@@ -30,7 +30,7 @@ public class ExperienceArticleAdapter extends RecyclerView.Adapter<ExperienceArt
 
     @NonNull
     @Override
-    public ExperienceArticleAdapter.ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.experience_item, parent, false);
 
@@ -38,7 +38,7 @@ public class ExperienceArticleAdapter extends RecyclerView.Adapter<ExperienceArt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ExperienceArticleAdapter.ArticleViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ArticleViewHolder holder, int position) {
         Article article = articles.get(position);
         holder.title.setText(article.Title);
 
