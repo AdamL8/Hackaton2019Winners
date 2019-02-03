@@ -196,8 +196,10 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         articleRecyclerView.setLayoutManager(mLayoutManager);
+
         articleRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         articleRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
         articleRecyclerView.setAdapter(mArticleAdapter);
 
         loadArticles();
