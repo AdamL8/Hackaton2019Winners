@@ -21,9 +21,9 @@ import co.w.mynewscast.ui.base.BaseActivity;
 public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpView, View.OnClickListener {
 
     private ImageButton forwardButton, pauseButton, playButton, rewindButton;
-    private ImageView mediaImage;
+    //private ImageView mediaImage;
     private MediaPlayer mediaPlayer = new MediaPlayer();
-    public TextView songName, duration;
+    public TextView duration;
 
     private double timeElapsed = 0;
     private double finalTime = 0;
@@ -52,9 +52,8 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
         pauseButton = (ImageButton) findViewById(R.id.media_pause);
         playButton = (ImageButton) findViewById(R.id.media_play);
         rewindButton = (ImageButton) findViewById(R.id.media_rew);
-        mediaImage = (ImageView)findViewById(R.id.mp3Image);
+        //mediaImage = (ImageView)findViewById(R.id.mp3Image);
 
-        songName = (TextView) findViewById(R.id.songName);
         duration = (TextView) findViewById(R.id.songDuration);
         seekbar = (SeekBar) findViewById(R.id.seekBar);
 
