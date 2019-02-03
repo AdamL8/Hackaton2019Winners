@@ -30,10 +30,8 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:contentScrim="@color/colorPrimaryDark"
-                app:expandedTitleMarginEnd="64dp"
-                app:expandedTitleMarginStart="48dp"
                 app:expandedTitleTextAppearance="@android:color/transparent"
-                app:expandedTitleGravity="bottom"
+                app:expandedTitleGravity="bottom|center_horizontal"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <RelativeLayout
@@ -92,6 +90,7 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:gravity="center"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
