@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -33,13 +32,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_play" />
 
-    <ListView
-        android:id="@+id/list_view"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/experience_list_view"
         android:layout_width="fill_parent"
         android:layout_height="510dp"
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton" />
-
 
 </android.support.constraint.ConstraintLayout>

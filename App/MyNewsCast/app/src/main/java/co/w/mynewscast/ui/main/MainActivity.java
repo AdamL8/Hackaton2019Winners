@@ -1,6 +1,5 @@
 package co.w.mynewscast.ui.main;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -8,9 +7,7 @@ import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -87,15 +84,8 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
     @Override
     public void taskCompletionResult(String result) {
-        Log.d("Result from articles query", result);
 
         try {
-//            try {
-//                result = URLEncoder.encode(result, "UTF-8");
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            }
-
             JSONArray jsonArray = new JSONArray(result);
 
             for (int i=0; i < jsonArray.length(); i++) {
@@ -213,32 +203,28 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
         mMainPresenter.attachView(this);
 
-//        //get firebase auth instance
-//        auth = FirebaseAuth.getInstance();
-//
-//        //get current user
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//
-//        {
-//            //startActivity(new Intent(MainActivity.this, SignInActivity.class));
-//        }
-//
-//        authListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//
-//                if (user == null) {
-//                    // user auth state is changed - user is null
-//                    // launch login activity
-//                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
-//                }
-//            }
-//        };
-//
-//        /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
-//         * user and hide hide any login buttons */
-//        auth.addAuthStateListener(authListener);
+        //get firebase auth instance
+        auth = FirebaseAuth.getInstance();
+
+        //get current user
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        authListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                if (user == null) {
+                    // user auth state is changed - user is null
+                    // launch login activity
+                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                }
+            }
+        };
+
+        /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
+         * user and hide hide any login buttons */
+        auth.addAuthStateListener(authListener);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

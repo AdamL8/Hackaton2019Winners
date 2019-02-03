@@ -1,4 +1,4 @@
-package co.w.mynewscast.ui.main;
+package co.w.mynewscast.ui.experience;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -16,12 +16,12 @@ import java.util.List;
 import co.w.mynewscast.R;
 import co.w.mynewscast.model.Article;
 
-public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
+public class ExperienceArticleAdapter extends RecyclerView.Adapter<ExperienceArticleAdapter.ArticleViewHolder> {
 
     Context context;
     List<Article> articles;
 
-    public ArticleAdapter(Context context, List<Article> objects)
+    public ExperienceArticleAdapter(Context context, List<Article> objects)
     {
         this.context = context;
         this.articles = objects;
@@ -29,15 +29,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     @NonNull
     @Override
-    public ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ExperienceArticleAdapter.ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.article_item, parent, false);
+                .inflate(R.layout.experience_item, parent, false);
 
-        return new ArticleViewHolder(itemView);
+        return new ExperienceArticleAdapter.ArticleViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ExperienceArticleAdapter.ArticleViewHolder holder, int position) {
         Article article = articles.get(position);
         holder.title.setText(article.Title);
 
@@ -53,11 +53,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     public class ArticleViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public ImageView thumbnail;
+        public TextView description;
 
         public ArticleViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.articleTitle);
-            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            title = (TextView) view.findViewById(R.id.listview_item_title);
+            description = (TextView) view.findViewById(R.id.listview_item_short_description);
+            thumbnail = (ImageView) view.findViewById(R.id.listview_image);
         }
     }
 }
