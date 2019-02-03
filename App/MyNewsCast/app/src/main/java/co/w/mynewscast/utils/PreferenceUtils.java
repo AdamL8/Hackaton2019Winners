@@ -23,6 +23,6 @@ public class PreferenceUtils {
 
     public static String getSelectedLanguageId(){
         return getDefaultSharedPreference(MyNewsCastApplication.getInstance().getApplicationContext())
-                .getString("app_language_id", "fr");
+                .getString("app_language_id", "en");
     }
 }

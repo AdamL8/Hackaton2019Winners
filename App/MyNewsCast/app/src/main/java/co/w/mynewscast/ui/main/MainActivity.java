@@ -186,6 +186,7 @@ public class MainActivity extends BaseActivity implements MainMvpView,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyNewsCastApplication.getInstance().initAppLanguage(this);
+
         activityComponent().inject(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
