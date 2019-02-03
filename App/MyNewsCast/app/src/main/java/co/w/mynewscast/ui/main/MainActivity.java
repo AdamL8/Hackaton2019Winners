@@ -41,6 +41,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import co.w.mynewscast.MyNewsCastApplication;
 import co.w.mynewscast.R;
 import co.w.mynewscast.model.Article;
 import co.w.mynewscast.ui.base.BaseActivity;
@@ -183,8 +184,8 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+        MyNewsCastApplication.getInstance().initAppLanguage(this);
         activityComponent().inject(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
