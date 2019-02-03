@@ -14,6 +14,7 @@ from recommendation import get_closest
 import wave
 from video_content import generateVideoAndAudioFromImagesToFile, getAllMediaUrlsFromContentId
 from summarizer import convertTextToSummary 
+import json
 
 DEBUG_MODE = 'DEBUG' in os.environ
 
@@ -144,9 +145,25 @@ def get_sentences(content):
 def get_tasks_en():
     return jsonify(DATA_CBC)
 
+@app.route('/api/content/info/en/<id>', methods=['GET'])
+def get_content_info_en(id):
+    value = list(filter(lambda x: int(x['id']) == int(id), DATA_CBC))
+    if len(value) == 1:
+        return jsonify(value[0])
+    else:
+        return jsonify({})
+
 @app.route('/api/content/fr', methods=['GET'])
 def get_tasks_fr():
     return jsonify(DATA_RADIOCAN)
+
+@app.route('/api/content/info/fr/<id>', methods=['GET'])
+def get_content_info_fr(id):
+    value = list(filter(lambda x: int(x['id']) == int(id), DATA_RADIOCAN))
+    if len(value) == 1:
+        return jsonify(value[0])
+    else:
+        return jsonify({})
 
 @app.route('/api/content/en/<id>', methods=['GET'])
 def get_content_en(id):
@@ -209,7 +226,7 @@ def get_audio_en(id):
 
 @app.route('/api/audio/fr/<id>')
 def get_audio_fr(id):
-    response = make_response(tts(get_radiocan_content(id)["content"], "en"))
+    response = make_response(tts(get_radiocan_content(id)["content"], "fr"))
     response.headers['Content-Type'] = 'audio/wav'
     return response
 

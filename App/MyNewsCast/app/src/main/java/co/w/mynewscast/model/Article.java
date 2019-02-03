@@ -15,6 +15,7 @@ public class Article implements Serializable {
     public String Url;
     public String Image;
     public Integer Id;
+    public boolean IsSelected = false;
 
     public Article() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
