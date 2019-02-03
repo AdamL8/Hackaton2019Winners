@@ -298,15 +298,15 @@ def send_audio(path):
 @app.route('/api/videotts/fr/<id>/<height>')
 def videotts_fr(id, height):
     width = int(height*16/9)
-    if not os.path.isfile(id + '/' + id + '.webm'):
+    if not os.path.isfile("audio_dump/" +  id + '/' + id + '.webm'):
         videoSize = (width, height)
 
         sentences = get_sentences(get_radiocan_content(id)["content"])
         audioPaths, audioTexts = writeWaveArrays(id, sentences, "fr")
         imageUrls = getAllMediaUrlsFromContentId(id)
-        generateVideoAndAudioFromImagesToFile(id + '/' + id + '.webm', imageUrls, audioPaths, audioTexts, videoSize)
+        generateVideoAndAudioFromImagesToFile("audio_dump/" + id + '/' + id + '.webm', imageUrls, audioPaths, audioTexts, videoSize)
     
-    return jsonify({'videoPath': os.getcwd() + '/' + id + '/' + id + '.webm', 'width': width, 'height': height})
+    return jsonify({'videoPath': 'http://40.76.47.167/audio_dump/' + id + '/' + id + '.webm', 'width': width, 'height': height})
 
 ############################################################################################
 # MARK: To enable that next route, new functions have to be created to scrape the CBC API,
