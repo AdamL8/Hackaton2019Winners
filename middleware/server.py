@@ -306,7 +306,7 @@ def videotts_fr(id, height):
         imageUrls = getAllMediaUrlsFromContentId(id)
         generateVideoAndAudioFromImagesToFile("audio_dump/" + id + '/' + id + '.webm', imageUrls, audioPaths, audioTexts, videoSize)
     
-    return jsonify({'videoPath': 'http://40.76.47.167/audio_dump/' + id + '/' + id + '.webm', 'width': width, 'height': height})
+    return send_from_directory("audio_dump/" +  id + '/', id + '.webm') #jsonify({'videoPath': 'http://40.76.47.167/audio_dump/' + id + '/' + id + '.webm', 'width': width, 'height': height})
 
 ############################################################################################
 # MARK: To enable that next route, new functions have to be created to scrape the CBC API,
