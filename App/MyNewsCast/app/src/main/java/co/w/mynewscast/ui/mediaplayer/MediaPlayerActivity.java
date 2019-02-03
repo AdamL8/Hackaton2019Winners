@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -24,9 +27,9 @@ import co.w.mynewscast.utils.PreferenceUtils;
 public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpView, View.OnClickListener {
 
     private ImageButton forwardButton, pauseButton, playButton, rewindButton;
-    //private ImageView mediaImage;
+    private ImageView mediaImage;
     private MediaPlayer mediaPlayer = new MediaPlayer();
-    public TextView duration;
+    public TextView duration, podcastTitle;
 
     private double timeElapsed = 0;
     private double finalTime = 0;
@@ -34,6 +37,7 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
     private Handler durationHandler = new Handler();;
     private int forwardTime = 5000;
     private SeekBar seekbar;
+    Integer playListIndex = 0;
 
     String mediaURLBase = "http://40.76.47.167/api/content/summary/audio";
     //String mediaURLBase = "http://40.76.47.167/api/audio"; server not working with this
@@ -54,7 +58,7 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
         ActicleListSerializable playList = (ActicleListSerializable) intent.getExtras().getSerializable("ArticleList");
 
         if (!DEBUG) {
-            Integer id = playList.articles.get(0).Id;
+            Integer id = playList.articles.get(playListIndex).Id;
             mediaURL = String.format("%s/%s/%s", mediaURLBase, PreferenceUtils.getSelectedLanguageId(), id);
         }
 
@@ -63,11 +67,18 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
 
         mMediaPlayerPresenter.attachView(this);
 
+
         forwardButton = (ImageButton) findViewById(R.id.media_ff);
         pauseButton = (ImageButton) findViewById(R.id.media_pause);
         playButton = (ImageButton) findViewById(R.id.media_play);
         rewindButton = (ImageButton) findViewById(R.id.media_rew);
-        //mediaImage = (ImageView)findViewById(R.id.mp3Image);
+        mediaImage = (ImageView)findViewById(R.id.podcast_image);
+        podcastTitle = (TextView)findViewById(R.id.podcast_title);
+
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_broken_image_grey_128dp);
+        Glide.with(this).load(playList.articles.get(playListIndex).Image).apply(requestOptions).into(mediaImage);
+
+        podcastTitle.setText(playList.articles.get(playListIndex).Title);
 
         duration = (TextView) findViewById(R.id.songDuration);
         seekbar = (SeekBar) findViewById(R.id.seekBar);
