@@ -221,7 +221,7 @@ def get_audio_en(id):
 
 @app.route('/api/audio/fr/<id>')
 def get_audio_fr(id):
-    response = make_response(tts(get_radiocan_content(id)["content"], "en"))
+    response = make_response(tts(get_radiocan_content(id)["content"], "fr"))
     response.headers['Content-Type'] = 'audio/wav'
     return response
 
