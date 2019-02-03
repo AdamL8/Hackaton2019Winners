@@ -8,6 +8,7 @@ import android.util.Log;
 import co.w.mynewscast.injection.component.ApplicationComponent;
 import co.w.mynewscast.injection.component.DaggerApplicationComponent;
 import co.w.mynewscast.injection.module.ApplicationModule;
+import co.w.mynewscast.utils.LocaleManager;
 import timber.log.Timber;
 
 public class MyNewsCastApplication extends Application {
@@ -22,14 +23,14 @@ public class MyNewsCastApplication extends Application {
     protected void attachBaseContext(Context base) {
         localeManager = new LocaleManager(base);
         super.attachBaseContext(localeManager.setLocale(base));
-        Log.d(TAG, "attachBaseContext");
+        Log.w(TAG, "attachBaseContext");
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         localeManager.setLocale(this);
-        Log.d(TAG, "onConfigurationChanged: " + newConfig.locale.getLanguage());
+        Log.w(TAG, "onConfigurationChanged: " + newConfig.locale.getLanguage());
     }
     @Override
     public void onCreate() {

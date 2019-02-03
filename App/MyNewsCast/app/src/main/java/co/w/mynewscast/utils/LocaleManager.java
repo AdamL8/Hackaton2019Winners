@@ -1,11 +1,13 @@
-package co.w.mynewscast;
+package co.w.mynewscast.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.util.Locale;
 
@@ -15,7 +17,7 @@ import static android.os.Build.VERSION_CODES.N;
 public class LocaleManager {
 
     public static final  String LANGUAGE_ENGLISH   = "en";
-    public static final  String LANGUAGE_UKRAINIAN = "uk";
+    public static final  String LANGUAGE_FRENCH = "fr";
     private static final String LANGUAGE_KEY       = "language_key";
 
     private final SharedPreferences prefs;
@@ -30,6 +32,7 @@ public class LocaleManager {
 
     public Context setNewLocale(Context c, String language) {
         persistLanguage(language);
+        Log.w("TAG", language);
         return updateResources(c, language);
     }
 
@@ -44,13 +47,13 @@ public class LocaleManager {
         prefs.edit().putString(LANGUAGE_KEY, language).commit();
     }
 
-    private Context updateResources(Context context, String language) {
+    private static Context updateResources(Context context, String language) {
         Locale locale = new Locale(language);
         Locale.setDefault(locale);
 
         Resources res = context.getResources();
         Configuration config = new Configuration(res.getConfiguration());
-        if (Utility.isAtLeastVersion(JELLY_BEAN_MR1)) {
+        if (Build.VERSION.SDK_INT >= 17) {
             config.setLocale(locale);
             context = context.createConfigurationContext(config);
         } else {

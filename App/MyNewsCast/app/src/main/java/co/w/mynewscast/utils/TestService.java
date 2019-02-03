@@ -1,4 +1,4 @@
-package co.w.mynewscast;
+package co.w.mynewscast.utils;
 
 import android.app.Service;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Locale;
+
+import co.w.mynewscast.MyNewsCastApplication;
 
 public class TestService extends Service {
 

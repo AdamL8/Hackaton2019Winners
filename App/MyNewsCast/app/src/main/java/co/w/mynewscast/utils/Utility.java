@@ -1,4 +1,4 @@
-package co.w.mynewscast;
+package co.w.mynewscast.utils;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
