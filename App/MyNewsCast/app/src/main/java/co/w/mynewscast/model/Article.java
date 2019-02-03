@@ -13,7 +13,7 @@ public class Article {
     public String Url;
     public String Image;
     public Integer Id;
-    public boolean IsSelected;
+    public boolean IsSelected = false;
 
     public Article() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
