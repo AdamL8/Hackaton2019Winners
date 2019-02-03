@@ -238,15 +238,3 @@ def getAllMediaUrlsFromContentId(contentId):
 # # vid = generateVideoFromImages(urls, 15.0, 0.02, (1280,720), 2)
 # # vid = writeSubtitle(vid, 'This is a test. This is a long test. This is a really long test. This is a really really long test. This is a really really really long test.', 8, (1280,720))
 # # vid.write_videofile('test_subtitle.mp4', fps=24)
-
-
-
-
-
-
-
-
-
-
-
-
