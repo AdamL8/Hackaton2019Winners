@@ -13,9 +13,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import co.w.mynewscast.R;
 import co.w.mynewscast.model.Article;
+import co.w.mynewscast.model.ArticleFirebaseModel;
 import co.w.mynewscast.ui.base.BaseActivity;
 
 public class QueueActivity extends BaseActivity {
@@ -26,7 +28,7 @@ public class QueueActivity extends BaseActivity {
     private DatabaseReference mArticleQueueReference;
     private ChildEventListener mArticleQueueListener;
 
-    private ArrayList<Article> articleList;
+    private List<ArticleFirebaseModel> articleList = new ArrayList<>();
 
     private static final String TAG = "QueueActivity";
 
@@ -49,12 +51,12 @@ public class QueueActivity extends BaseActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 // A new message has been added
                 // onChildAdded() will be called for each node at the first time
-                Article article = dataSnapshot.getValue(Article.class);
+                ArticleFirebaseModel article = dataSnapshot.getValue(ArticleFirebaseModel.class);
                 articleList.add(article);
 
-                Log.e(TAG, "onChildAdded:" + article.Id);
+                Log.e(TAG, "onChildAdded:" + article.id);
 
-                Article latest = articleList.get(articleList.size() - 1);
+                ArticleFirebaseModel latest = articleList.get(articleList.size() - 1);
 
 //                tvAuthor.setText(latest.author);
 //                tvTime.setText(latest.time);
@@ -66,8 +68,8 @@ public class QueueActivity extends BaseActivity {
                 Log.e(TAG, "onChildChanged:" + dataSnapshot.getKey());
 
                 // A message has changed
-                Article article = dataSnapshot.getValue(Article.class);
-                Toast.makeText(QueueActivity.this, "onChildChanged: " + article.Id, Toast.LENGTH_SHORT).show();
+                ArticleFirebaseModel article = dataSnapshot.getValue(ArticleFirebaseModel.class);
+                Toast.makeText(QueueActivity.this, "onChildChanged: " + article.id, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -75,8 +77,8 @@ public class QueueActivity extends BaseActivity {
                 Log.e(TAG, "onChildRemoved:" + dataSnapshot.getKey());
 
                 // A message has been removed
-                Article article = dataSnapshot.getValue(Article.class);
-                Toast.makeText(QueueActivity.this, "onChildRemoved: " + article.Id, Toast.LENGTH_SHORT).show();
+                ArticleFirebaseModel article = dataSnapshot.getValue(ArticleFirebaseModel.class);
+                Toast.makeText(QueueActivity.this, "onChildRemoved: " + article.id, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -84,8 +86,8 @@ public class QueueActivity extends BaseActivity {
                 Log.e(TAG, "onChildMoved:" + dataSnapshot.getKey());
 
                 // A message has changed position
-                Article article = dataSnapshot.getValue(Article.class);
-                Toast.makeText(QueueActivity.this, "onChildMoved: " + article.Id, Toast.LENGTH_SHORT).show();
+                ArticleFirebaseModel article = dataSnapshot.getValue(ArticleFirebaseModel.class);
+                Toast.makeText(QueueActivity.this, "onChildMoved: " + article.id, Toast.LENGTH_SHORT).show();
             }
 
             @Override

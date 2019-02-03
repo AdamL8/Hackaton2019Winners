@@ -51,6 +51,7 @@ import co.w.mynewscast.R;
 import co.w.mynewscast.model.Article;
 import co.w.mynewscast.ui.base.BaseActivity;
 import co.w.mynewscast.ui.experience.ExperienceActivity;
+import co.w.mynewscast.ui.queue.QueueActivity;
 import co.w.mynewscast.ui.settings.SettingsActivity;
 import co.w.mynewscast.ui.signin.SignInActivity;
 import co.w.mynewscast.utils.DialogFactory;
@@ -316,6 +317,9 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         } else if (id == R.id.nav_signout)
         {
             auth.signOut();
+        } else if (id == R.id.nav_queue)
+        {
+            startActivity(new Intent(this, QueueActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

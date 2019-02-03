@@ -14,6 +14,10 @@ public class Article {
     public String Image;
     public Integer Id;
 
+    public Article() {
+        // Default constructor required for calls to DataSnapshot.getValue(Post.class)
+    }
+
     public Article (JSONObject object)
     {
         if (object != null)
