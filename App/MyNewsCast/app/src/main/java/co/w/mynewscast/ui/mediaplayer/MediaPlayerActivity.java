@@ -33,17 +33,18 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
 
     private Handler durationHandler = new Handler();;
     private int forwardTime = 5000;
-    private int backwardTime = 5000;
     private SeekBar seekbar;
 
-    public static int oneTimeOnly = 0;
-    String mediaURLBase = "http://40.76.47.167/api/audio";
+    String mediaURLBase = "http://40.76.47.167/api/content/summary/audio";
+    //String mediaURLBase = "http://40.76.47.167/api/audio"; server not working with this
+
     String mediaURL = "http://40.76.47.167/api/content/summary/audio/fr/1150647"; // default
+
+    // DEBUG FLAG
+    boolean DEBUG = false;
 
     @Inject
     MediaPlayerPresenter mMediaPlayerPresenter;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +53,10 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
         Intent intent = getIntent();
         ActicleListSerializable playList = (ActicleListSerializable) intent.getExtras().getSerializable("ArticleList");
 
-        Integer id = playList.articles.get(0).Id;
-        mediaURL = String.format("%s/%s/%s", mediaURLBase, PreferenceUtils.getSelectedLanguageId(), id);
+        if (!DEBUG) {
+            Integer id = playList.articles.get(0).Id;
+            mediaURL = String.format("%s/%s/%s", mediaURLBase, PreferenceUtils.getSelectedLanguageId(), id);
+        }
 
         activityComponent().inject(this);
         setContentView(R.layout.media_player);
