@@ -32,9 +32,9 @@ public class ExperienceArticleAdapter extends RecyclerView.Adapter<ExperienceArt
     @Override
     public ExperienceArticleAdapter.ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.content_experience, parent, false);
+                .inflate(R.layout.experience_item, parent, false);
 
-        return new ExperienceArticleAdapter.ArticleViewHolder(itemView);
+        return new ArticleViewHolder(itemView);
     }
 
     @Override
@@ -43,8 +43,8 @@ public class ExperienceArticleAdapter extends RecyclerView.Adapter<ExperienceArt
         holder.title.setText(article.Title);
 
         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_broken_image_grey_128dp);
-        // loading album cover using Glide library
 
+        // loading album cover using Glide library
         Glide.with(context).load(article.Image).apply(requestOptions).into(holder.thumbnail);
     }
 

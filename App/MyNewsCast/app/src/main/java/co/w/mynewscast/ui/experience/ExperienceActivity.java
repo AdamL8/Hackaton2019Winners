@@ -2,6 +2,7 @@ package co.w.mynewscast.ui.experience;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
@@ -45,18 +46,18 @@ public class ExperienceActivity extends BaseActivity implements ExperienceMvpVie
         experienceArticleAdapter = new ExperienceArticleAdapter(this, experienceArticleList);
         experienceArticleRecyclerView = findViewById(R.id.experience_list_view);
 
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        experienceArticleRecyclerView.setLayoutManager(mLayoutManager);
         experienceArticleRecyclerView.setAdapter(experienceArticleAdapter);
 
         loadArticles();
 
         mExperiencePresenter.attachView(this);
-
-
     }
 
     private void loadArticles()
     {
-        new ExperienceActivity.JsonTask(this).execute("http://40.76.47.167/api/content/fr");
+        new JsonTask(this).execute("http://40.76.47.167/api/content/fr");
     }
 
     @Override
@@ -138,6 +139,12 @@ public class ExperienceActivity extends BaseActivity implements ExperienceMvpVie
                 }
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            delegate.taskCompletionResult(result);
         }
     }
 }
