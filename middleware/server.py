@@ -14,6 +14,7 @@ import wave
 import uuid
 from video_content import generateVideoAndAudioFromImagesToFile, getAllMediaUrlsFromContentId
 import os.path
+from summarizer import convertTextToSummary 
 
 #DEBUG_MODE = 'DEBUG' in os.environ
 DEBUG_MODE = True
@@ -157,7 +158,39 @@ def get_content_en(id):
 def get_content_fr(id):
     return jsonify(get_radiocan_content(id))
 
+@app.route('/api/content/summary/en/<id>', methods=['GET'])
+def get_summary_content_en(id):
+    return jsonify(convertTextToSummary(get_cbc_content(id)['content']))
+
+@app.route('/api/content/summary/fr/<id>', methods=['GET'])
+def get_summary_content_fr(id):
+    return jsonify(convertTextToSummary(get_radiocan_content(id)['content']))
+
+@app.route('/api/content/summary/audio/en/<id>', methods=['GET'])
+def get_summary_content_audio_en(id):
+    response = make_response(tts(convertTextToSummary(convertTextToSummary(get_cbc_content(id)['content'])), "en"))
+    response.headers['Content-Type'] = 'audio/wav'
+    return response
+
+@app.route('/api/content/summary/audio/fr/<id>', methods=['GET'])
+def get_summary_content_audio_fr(id):
+    response = make_response(tts(convertTextToSummary(convertTextToSummary(get_radiocan_content(id)['content'])), "fr"))
+    response.headers['Content-Type'] = 'audio/wav'
+    return response
+
 # TTS routes
+@app.route('/api/audio/en/<id>')
+def get_audio_en(id):
+    response = make_response(tts(get_cbc_content(id)["content"], "en"))
+    response.headers['Content-Type'] = 'audio/wav'
+    return response
+
+@app.route('/api/audio/fr/<id>')
+def get_audio_fr(id):
+    response = make_response(tts(get_radiocan_content(id)["content"], "en"))
+    response.headers['Content-Type'] = 'audio/wav'
+    return response
+
 @app.route('/api/tts/en/<id>')
 def get_tts_en(id):
     sentences = get_sentences(get_cbc_content(id)["content"])
