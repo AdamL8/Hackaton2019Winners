@@ -2,11 +2,13 @@ package co.w.mynewscast.ui.experience;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -59,6 +61,19 @@ public class ExperienceActivity extends BaseActivity implements ExperienceMvpVie
         experienceArticleRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         experienceArticleRecyclerView.setAdapter(experienceArticleAdapter);
+
+        experienceArticleRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, experienceArticleRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+            @Override public void onItemClick(View view, int position) {
+                for (int i = 0; i < experienceArticleRecyclerView.getChildCount(); i++) {
+                    RecyclerView.ViewHolder holder = experienceArticleRecyclerView.findViewHolderForAdapterPosition(i);
+                    holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+                }
+                view.setBackgroundColor(Color.parseColor("#4577C6"));
+            }
+
+            @Override public void onLongItemClick(View view, int position) {
+            }
+        }));
 
         loadArticles();
 

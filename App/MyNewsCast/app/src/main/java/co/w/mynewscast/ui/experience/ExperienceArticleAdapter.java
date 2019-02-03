@@ -6,8 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -17,7 +19,7 @@ import java.util.List;
 import co.w.mynewscast.R;
 import co.w.mynewscast.model.Article;
 
-public class ExperienceArticleAdapter extends RecyclerView.Adapter<ExperienceArticleAdapter.ArticleViewHolder> {
+public class ExperienceArticleAdapter extends RecyclerView.Adapter<ExperienceArticleAdapter.ArticleViewHolder> implements View.OnClickListener {
 
     Context context;
     List<Article> articles;
@@ -28,12 +30,20 @@ public class ExperienceArticleAdapter extends RecyclerView.Adapter<ExperienceArt
         this.articles = objects;
     }
 
+    @Override public void onClick(View view) {
+        // selected item
+        //((TextView) view.findViewById(R.id.articleTitle)).setText("yoyoyo");
+
+
+
+    }
+
     @NonNull
     @Override
     public ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.experience_item, parent, false);
-
+        itemView.setOnClickListener(this);
         return new ArticleViewHolder(itemView);
     }
 

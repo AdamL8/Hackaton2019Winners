@@ -2,11 +2,7 @@ package co.w.mynewscast.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Rect;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,32 +11,16 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +33,6 @@ import co.w.mynewscast.ui.base.BaseActivity;
 import co.w.mynewscast.ui.experience.ExperienceActivity;
 import co.w.mynewscast.ui.queue.QueueActivity;
 import co.w.mynewscast.ui.settings.SettingsActivity;
-import co.w.mynewscast.ui.signin.SignInActivity;
 import co.w.mynewscast.utils.DialogFactory;
 import co.w.mynewscast.utils.PreferenceUtils;
 import co.w.mynewscast.utils.QueryHelper;
@@ -157,28 +136,28 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
         mMainPresenter.attachView(this);
 
-        //get firebase auth instance
-        auth = FirebaseAuth.getInstance();
-
-        //get current user
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
-                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
-                }
-            }
-        };
-
-        /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
-         * user and hide hide any login buttons */
-        auth.addAuthStateListener(authListener);
+//        //get firebase auth instance
+//        auth = FirebaseAuth.getInstance();
+//
+//        //get current user
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//
+//        authListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                FirebaseUser user = firebaseAuth.getCurrentUser();
+//
+//                if (user == null) {
+//                    // user auth state is changed - user is null
+//                    // launch login activity
+//                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
+//                }
+//            }
+//        };
+//
+//        /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
+//         * user and hide hide any login buttons */
+//        auth.addAuthStateListener(authListener);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
