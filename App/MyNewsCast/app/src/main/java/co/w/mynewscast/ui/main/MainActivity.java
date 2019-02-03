@@ -20,6 +20,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,15 +44,17 @@ import javax.inject.Inject;
 import co.w.mynewscast.R;
 import co.w.mynewscast.model.Article;
 import co.w.mynewscast.ui.base.BaseActivity;
+import co.w.mynewscast.ui.experience.ExperienceActivity;
 import co.w.mynewscast.ui.signin.SignInActivity;
 import co.w.mynewscast.utils.DialogFactory;
 import co.w.mynewscast.utils.TaskDelegate;
 
 public class MainActivity extends BaseActivity implements MainMvpView,
-        NavigationView.OnNavigationItemSelectedListener, TaskDelegate {
+        NavigationView.OnNavigationItemSelectedListener, TaskDelegate, View.OnClickListener {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
             "co.w.mynewscast.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+    private static final int RC_CONTENT_EXPERIENCE = 1;
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
@@ -173,14 +176,20 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         return true;
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.news_articles);
         setSupportActionBar(toolbar);
+
+
+        // Button listeners
+        findViewById(R.id.newspaper).setOnClickListener(this);
 
         mArticleAdapter = new ArticleAdapter(this, articleList);
         articleRecyclerView = findViewById(R.id.recycler_view);
@@ -196,27 +205,27 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         mMainPresenter.attachView(this);
 
         //get firebase auth instance
-        auth = FirebaseAuth.getInstance();
-
-        //get current user
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
-                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
-                }
-            }
-        };
-
-        /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
-         * user and hide hide any login buttons */
-        auth.addAuthStateListener(authListener);
+//        auth = FirebaseAuth.getInstance();
+//
+//        //get current user
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//
+//        authListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                FirebaseUser user = firebaseAuth.getCurrentUser();
+//
+//                if (user == null) {
+//                    // user auth state is changed - user is null
+//                    // launch login activity
+//                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
+//                }
+//            }
+//        };
+//
+//        /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
+//         * user and hide hide any login buttons */
+//        auth.addAuthStateListener(authListener);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -226,6 +235,14 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.newspaper) {
+            contentExperience();
+        }
     }
 
     @Override
@@ -294,6 +311,12 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    // [START contentExperience]
+    public void contentExperience() {
+        startActivityForResult(new Intent(this, ExperienceActivity.class),RC_CONTENT_EXPERIENCE);
+    }
+    // [END contentExperience]
 
     /***** MVP View methods implementation *****/
 
