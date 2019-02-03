@@ -66,4 +66,10 @@
     <string name="news_articles">Nouvelles</string>
     <string name="play_button">play_button</string>
     <string name="transit_button">transit_button</string>
+
+    <string name="settings_tips">Click for activity restart\nLong click for application restart</string>
+    <string name="french">Francais</string>
+    <string name="english">Anglais</string>
+
+    <string name="hello">Bonjour\n%s</string>
 </resources>
