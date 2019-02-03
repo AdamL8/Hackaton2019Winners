@@ -226,15 +226,17 @@ def writeWaveArrays(id, sentences, lang):
 # wav and text download
 @app.route('/audio_dump/<path:path>')
 def send_audio(path):
-    path = '/' + path
-    splitted = path.split('-%%-')
+    splittedPath = path.split('/')
+    folderPath = '/'
 
-    splitted2 = splitted[1].split('/')
+    i = 0
+    while i < len(splittedPath) -1:
+        folderPath += splittedPath[i] + '/'
+        i += 1
 
-    folder = splitted[0] + '-%%-' + splitted2[0]
-    fileName = splitted2[1]
-
-    return send_from_directory(folder, fileName)
+    fileName = splittedPath[len(splittedPath) -1]
+    
+    return send_from_directory(folderPath, fileName)
 
 if __name__ == '__main__':
     print ('Debug mode is: %r' % (DEBUG_MODE) )
