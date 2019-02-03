@@ -291,7 +291,7 @@ def send_audio(path):
 
     fileName = splittedPath[len(splittedPath) -1]
     
-    return send_from_directory(folderPath, fileName)
+    return send_from_directory("audio_dump" + folderPath, fileName)
 
 # video creation
 @app.route('/api/videotts/fr/<id>', defaults={'height':720})
