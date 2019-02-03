@@ -55,8 +55,7 @@ public class VideoPlayerActivity extends BaseActivity implements VideoPlayerMvpV
             videoView.setMediaController(mediaControls);
 
             //set the uri of the video to be played
-            //videoView.setVideoURI("http://40.76.47.167/api/content/summary/audio/fr/1150647");
-            videoView.setVideoPath("http://40.76.47.167/api/content/summary/audio/fr/1150647");
+            videoView.setVideoPath("http://40.76.47.167/api/videotts/fr/1119630");
 
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
