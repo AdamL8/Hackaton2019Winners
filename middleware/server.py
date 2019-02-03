@@ -15,7 +15,8 @@ import uuid
 from video_content import generateVideoAndAudioFromImagesToFile, getAllMediaUrlsFromContentId
 import os.path
 
-DEBUG_MODE = 'DEBUG' in os.environ
+#DEBUG_MODE = 'DEBUG' in os.environ
+DEBUG_MODE = True
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -199,14 +200,13 @@ def writeWaveArrays(id, sentences, lang):
     audioPaths = []
     audioTexts = []
 
-    dirPath = id + '-%%-' + str(uuid.uuid4())
-    if not os.path.isdir(dirPath):
-        os.makedirs(dirPath)
+    if not os.path.isdir(id):
+        os.makedirs(id)
 
     index = 0
     for sentence in sentences:
         waveName = id + '_' + str(index)+ '.wav'
-        wavePath = dirPath + '/' + waveName
+        wavePath = id + '/' + waveName
         with open(wavePath, 'wb') as audio:
             audio.write(tts(sentence, lang))
             audioPaths.append(wavePath)
@@ -238,25 +238,67 @@ def send_audio(path):
     
     return send_from_directory(folderPath, fileName)
 
+# video creation
+@app.route('/api/videotts/fr/<id>', defaults={'height':720})
+@app.route('/api/videotts/fr/<id>/<height>')
+def videotts_fr(id, height):
+    width = int(height*16/9)
+    if not os.path.isfile(id + '/' + id + '.webm'):
+        videoSize = (width, height)
+
+        sentences = get_sentences(get_radiocan_content(id)["content"])
+        audioPaths, audioTexts = writeWaveArrays(id, sentences, "fr")
+        imageUrls = getAllMediaUrlsFromContentId(id)
+        generateVideoAndAudioFromImagesToFile(id + '/' + id + '.webm', imageUrls, audioPaths, audioTexts, videoSize)
+    
+    return jsonify({'videoPath': os.getcwd() + '/' + id + '/' + id + '.webm', 'width': width, 'height': height})
+
+############################################################################################
+# MARK: To enable that next route, new functions have to be created to scrape the CBC API,
+# that means (in video_content.py): getAllMediaUrlsFromContentId(contentId)
+# the rest should work well with whatever language, audio and images (although please use
+# 16:9 images, else it's undefined behaviorTM)
+############################################################################################
+
+# @app.route('/api/videotts/en/<id>', defaults={'height':720})
+# @app.route('/api/videotts/en/<id>/<height>')
+# def videotts_en(id, height):
+#     width = int(height*16/2)
+#     if not os.path.isfile(id + '/' + id + '.webm'):
+#         videoSize = (width, height)
+
+#         sentences = get_sentences(get_radiocan_content(id)["content"])
+#         audioPaths, audioTexts = writeWaveArrays(id, sentences, "en")
+#         imageUrls = getAllMediaUrlsFromContentId(id)
+#         generateVideoAndAudioFromImagesToFile(id + '/' + id + '.webm', imageUrls, audioPaths, audioTexts, videoSize)
+    
+#     return jsonify({'videoPath': id + '/' + id + '.webm', 'width': width, 'height': height})
+
+############################################################################################
+# We should probably implement the summarize functionalities too
+############################################################################################
+
+
+############################################################################################
+# This is the function for generating videos before requests (the english one is to do)
+############################################################################################
+def createVideoTTSForCaching_fr(id, height=720):
+    width = int(height*16/9)
+    if not os.path.isfile(id + '/' + id + '.webm'):
+        videoSize = (width, height)
+
+        sentences = get_sentences(get_radiocan_content(id)["content"])
+        audioPaths, audioTexts = writeWaveArrays(id, sentences, "fr")
+        imageUrls = getAllMediaUrlsFromContentId(id)
+        generateVideoAndAudioFromImagesToFile(id + '/' + id + '.webm', imageUrls, audioPaths, audioTexts, videoSize)
+
+
+
+
 if __name__ == '__main__':
     print ('Debug mode is: %r' % (DEBUG_MODE) )
     update_data_thread = threading.Thread(target=data_thread)
     update_data_thread.start()
     app.run(debug=DEBUG_MODE, host='0.0.0.0', port=PORT)
 
-
-# video creation
-# @app.route('/api/videotts/fr/<id>', defaults={'height':720})
-# @app.route('/api/videotts/fr/<id>/<height>')
-# def videotts_fr(id, height):
-#     if not os.path.isfile('./audio_dump/' + id + '.webm'):
-#         width = int(height*16/2)
-#         videoSize = (width, height)
-
-#         sentences = get_sentences(get_radiocan_content(id)["content"])
-#         audioPaths, audioTexts = writeWaveArrays(id, sentences, "fr")
-#         imageUrls = getAllMediaUrlsFromContentId(id)
-#         generateVideoAndAudioFromImagesToFile('./audio_dump/' + id + '.webm', imageUrls, audioPaths, audioTexts, videoSize)
-    
-#     return jsonify({'videoPath': './audio_dump/' + id + '.webm'})
 
