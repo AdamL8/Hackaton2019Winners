@@ -3,14 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
+
     <item android:title="Account">
         <menu>
             <item
-                android:id="@+id/nav_signout"
-                android:title="Sign Out" />
+                android:id="@+id/nav_queue"
+                android:title="Queue" />
             <item
                 android:id="@+id/nav_settings"
                 android:title="Settings" />
+            <item
+                android:id="@+id/nav_signout"
+                android:title="Sign Out" />
         </menu>
     </item>
 </menu>

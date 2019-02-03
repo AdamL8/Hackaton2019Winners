@@ -24,6 +24,11 @@ import android.widget.ImageButton;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -93,12 +98,13 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
             try {
                 JSONArray jsonArray = new JSONArray(result);
-
+                int curSize = mArticleAdapter.getItemCount();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject articleJson = jsonArray.getJSONObject(i);
                     articleList.add(new Article(articleJson));
                 }
 
+                mArticleAdapter.notifyItemRangeChanged(curSize, jsonArray.length());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -216,27 +222,27 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         mMainPresenter.attachView(this);
 
         //get firebase auth instance
-//        auth = FirebaseAuth.getInstance();
-//
-//        //get current user
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//
-//        authListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//
-//                if (user == null) {
-//                    // user auth state is changed - user is null
-//                    // launch login activity
-//                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
-//                }
-//            }
-//        };
-//
-//        /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
-//         * user and hide hide any login buttons */
-//        auth.addAuthStateListener(authListener);
+        auth = FirebaseAuth.getInstance();
+
+        //get current user
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        authListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                if (user == null) {
+                    // user auth state is changed - user is null
+                    // launch login activity
+                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                }
+            }
+        };
+
+        /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
+         * user and hide hide any login buttons */
+        auth.addAuthStateListener(authListener);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
