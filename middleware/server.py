@@ -67,11 +67,11 @@ def mapRadioCanItems(radioCanElement):
     item = ReturnableItem()
     content = radioCanElement['referredContent']
     item.id = content['id']
-    item.title = content['title']
+    item.title = content['title'].replace("&nbsp;", " ")
     item.categoryName = content['themeTag']['name']
     item.categoryId = content['themeTag']['id']
     item.url = content['canonicalWebLink']['href']
-    item.description = content['outOfContextTitle'] #change to summary if html->text works
+    item.description = content['outOfContextTitle'].replace("&nbsp;", " ") #change to summary if html->text works
     if 'summaryMultimediaItem' in content and 'concreteImages' in content['summaryMultimediaItem']:
         for i in content['summaryMultimediaItem']['concreteImages']:
             if i['dimensionRatio'] == "1:1":
