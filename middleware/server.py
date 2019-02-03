@@ -12,7 +12,8 @@ from tts import tts
 from textToSentence import split_into_sentences
 import wave
 import uuid
-
+from video_content import generateVideoAndAudioFromImagesToFile, getAllMediaUrlsFromContentId
+import os.path
 
 DEBUG_MODE = 'DEBUG' in os.environ
 
@@ -172,6 +173,32 @@ def get_tts_fr(id):
 
 def writeWave(id, sentences, lang):
     response = []
+
+    if not os.path.isdir(id):
+        os.makedirs(id)
+
+    index = 0
+    for sentence in sentences:
+        waveName = id + '_' + str(index)+ '.wav'
+        wavePath = id + '/' + waveName
+        with open(wavePath, 'wb') as audio:
+            audio.write(tts(sentence, lang))
+
+        subtitleName = id + '_' + str(index) + '.txt'
+        subtitlePath = id + '/' + subtitleName
+        with open(subtitlePath, "w") as subtitle:
+            subtitle.write(sentence)
+
+        response.append({"sentenceId": index, "newsId": id, "dirPath": os.getcwd() + '/' + id, "wave": waveName, "text": sentence})
+        index += 1
+
+    return response
+
+def writeWaveArrays(id, sentences, lang):
+    # response = []
+    audioPaths = []
+    audioTexts = []
+
     dirPath = id + '-%%-' + str(uuid.uuid4())
     if not os.path.isdir(dirPath):
         os.makedirs(dirPath)
@@ -182,32 +209,54 @@ def writeWave(id, sentences, lang):
         wavePath = dirPath + '/' + waveName
         with open(wavePath, 'wb') as audio:
             audio.write(tts(sentence, lang))
+            audioPaths.append(wavePath)
 
-        subtitleName = id + '_' + str(index) + '.txt'
-        subtitlePath = dirPath + '/' + subtitleName
-        with open(subtitlePath, "w") as subtitle:
-            subtitle.write(sentence)
+        # subtitleName = id + '_' + str(index) + '.txt'
+        # subtitlePath = dirPath + '/' + subtitleName
+        # with open(subtitlePath, "w") as subtitle:
+        #     subtitle.write(sentence)
+        audioTexts.append(sentence)
 
-        response.append({"sentenceId":index, "newsId": id, "dirPath": os.getcwd() + '/' + dirPath, "wave": waveName, "text": sentence})
+        # response.append({"sentenceId":index, "newsId": id, "dirPath": os.getcwd() + '/' + dirPath, "wave": waveName, "text": sentence})
         index += 1
 
-    return response
+    return audioPaths, audioTexts
+
 
 # wav and text download
 @app.route('/audio_dump/<path:path>')
 def send_audio(path):
-    path = '/' + path
-    splitted = path.split('-%%-')
+    splittedPath = path.split('/')
+    folderPath = '/'
 
-    splitted2 = splitted[1].split('/')
+    i = 0
+    while i < len(splittedPath) -1:
+        folderPath += splittedPath[i] + '/'
+        i += 1
 
-    folder = splitted[0] + '-%%-' + splitted2[0]
-    fileName = splitted2[1]
-
-    return send_from_directory(folder, fileName)
+    fileName = splittedPath[len(splittedPath) -1]
+    
+    return send_from_directory(folderPath, fileName)
 
 if __name__ == '__main__':
     print ('Debug mode is: %r' % (DEBUG_MODE) )
     update_data_thread = threading.Thread(target=data_thread)
     update_data_thread.start()
     app.run(debug=DEBUG_MODE, host='0.0.0.0', port=PORT)
+
+
+# video creation
+# @app.route('/api/videotts/fr/<id>', defaults={'height':720})
+# @app.route('/api/videotts/fr/<id>/<height>')
+# def videotts_fr(id, height):
+#     if not os.path.isfile('./audio_dump/' + id + '.webm'):
+#         width = int(height*16/2)
+#         videoSize = (width, height)
+
+#         sentences = get_sentences(get_radiocan_content(id)["content"])
+#         audioPaths, audioTexts = writeWaveArrays(id, sentences, "fr")
+#         imageUrls = getAllMediaUrlsFromContentId(id)
+#         generateVideoAndAudioFromImagesToFile('./audio_dump/' + id + '.webm', imageUrls, audioPaths, audioTexts, videoSize)
+    
+#     return jsonify({'videoPath': './audio_dump/' + id + '.webm'})
+

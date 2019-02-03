@@ -5,8 +5,8 @@ from PIL import Image
 from io import BytesIO
 import requests
 import numpy
-import glob
-import os.path
+# import glob
+# import os.path
 
 # speed = 0.01
 # effect_duration = 4
