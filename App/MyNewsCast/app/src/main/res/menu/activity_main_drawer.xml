@@ -4,19 +4,19 @@
     tools:showIn="navigation_view">
 
 
-    <item android:title="Account">
+    <item android:title="@string/account">
         <menu>
             <item
                 android:id="@+id/nav_queue"
-                android:title="Queue"
+                android:title="@string/queue"
                 android:background="?android:attr/selectableItemBackgroundBorderless"/>
             <item
                 android:id="@+id/nav_settings"
-                android:title="Settings"
+                android:title="@string/settings"
                 android:background="?android:attr/selectableItemBackgroundBorderless"/>
             <item
                 android:id="@+id/nav_signout"
-                android:title="Sign Out"
+                android:title="@string/sign_out"
                 android:background="?android:attr/selectableItemBackgroundBorderless"/>
         </menu>
     </item>

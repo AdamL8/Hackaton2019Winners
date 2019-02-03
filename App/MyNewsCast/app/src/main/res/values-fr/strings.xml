@@ -72,4 +72,11 @@
     <string name="english">Anglais</string>
 
     <string name="hello">Bonjour\n%s</string>
+    <string name="saved_list">Articles sauvegardées</string>
+    <string name="experience">Liste de lecture</string>
+
+    <string name="queue">Articles sauvegardées</string>
+    <string name="settings">Paramètres</string>
+    <string name="account">Compte</string>
+
 </resources>
