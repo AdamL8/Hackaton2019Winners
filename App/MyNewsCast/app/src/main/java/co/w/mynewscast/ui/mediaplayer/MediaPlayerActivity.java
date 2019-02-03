@@ -36,6 +36,7 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
     private TextView tx1,tx2,tx3;
 
     public static int oneTimeOnly = 0;
+    String mediaURL = "http://40.76.47.167/api/videotts/fr/1150647";
 
     @Inject
     MediaPlayerPresenter meMediaPlayerPresenter;
@@ -63,7 +64,7 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
         try {
-            mediaPlayer.setDataSource(String.valueOf(new URL(""))); // TODO update with real URL
+            mediaPlayer.setDataSource(String.valueOf(new URL(mediaURL))); // TODO update with real URL
             mediaPlayer.prepare();
         } catch (IOException e) {
             e.printStackTrace();

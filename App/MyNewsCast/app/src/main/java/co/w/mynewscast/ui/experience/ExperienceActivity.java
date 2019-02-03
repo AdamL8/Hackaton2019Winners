@@ -1,10 +1,12 @@
 package co.w.mynewscast.ui.experience;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,9 +28,10 @@ import co.w.mynewscast.R;
 import co.w.mynewscast.model.Article;
 import co.w.mynewscast.ui.base.BaseActivity;
 import co.w.mynewscast.ui.main.MainActivity;
+import co.w.mynewscast.ui.mediaplayer.MediaPlayerActivity;
 import co.w.mynewscast.utils.TaskDelegate;
 
-public class ExperienceActivity extends BaseActivity implements ExperienceMvpView, TaskDelegate {
+public class ExperienceActivity extends BaseActivity implements ExperienceMvpView, TaskDelegate, View.OnClickListener {
     @Inject
     ExperiencePresenter mExperiencePresenter;
 
@@ -42,6 +45,8 @@ public class ExperienceActivity extends BaseActivity implements ExperienceMvpVie
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
         setContentView(R.layout.content_experience);
+
+        findViewById(R.id.playButton).setOnClickListener(this);
 
         experienceArticleAdapter = new ExperienceArticleAdapter(this, experienceArticleList);
         experienceArticleRecyclerView = findViewById(R.id.experience_list_view);
@@ -82,6 +87,14 @@ public class ExperienceActivity extends BaseActivity implements ExperienceMvpVie
         super.onDestroy();
 
         mExperiencePresenter.detachView();
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.playButton) {
+            startActivity(new Intent(this, MediaPlayerActivity.class));
+        }
     }
 
     private class JsonTask extends AsyncTask<String, String, String> {
