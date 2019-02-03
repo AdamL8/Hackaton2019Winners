@@ -1,0 +1,69 @@
+<resources>
+    <string name="app_name">FollowMeNews</string>
+    <string name="navigation_drawer_open">Ouvrir le menu de navigation</string>
+    <string name="navigation_drawer_close">Fermer le menu de navigation</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">En-tête de navigation</string>
+    <string name="action_settings">Paramètres</string>
+
+    <string name="action_add_favourite">Ajouter aux favoris</string>
+
+    <string name="dialog_action_ok">OK</string>
+    <string name="dialog_action_cancel">Annulé</string>
+    <string name="dialog_error_title">Désolé</string>
+    <string name="dialog_error_loading_main">Erreur de chargement de l\'activité principale</string>
+
+    <string name="label_google_sign_in">Authentification Firebase + Google</string>
+    <string name="desc_google_sign_in">Utilisation des critères Google pour l\'authentification avec Firebase.</string>
+
+    <string name="hint_user_id">ID d\'usager</string>
+    <string name="get_custom_token">Acqisition du jeton</string>
+    <string name="sign_in">Connexion</string>
+    <string name="create_account">Créer un compte</string>
+
+    <string name="signed_in">Connecté</string>
+    <string name="signed_out">Déconnecté</string>
+    <string name="send_link">Envoyé le lien</string>
+    <string name="sign_out">Déconnexion</string>
+    <string name="verify_email">Vérification de l\'adresse courielle</string>
+    <string name="disconnect">Déconnecter</string>
+    <string name="loading">Chargement…</string>
+    <string name="custom_token">Jeton personalisé</string>
+    <string name="token_null">Jeton: null</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Mot de passe</string>
+    <string name="desc_firebase_lockup">Logo et nom Firebase</string>
+    <string name="auth_failed">Échec de l\'authentification</string>
+    <string name="start_phone_auth">Départ</string>
+    <string name="verify_phone_auth">Vérification</string>
+    <string name="resend_phone_auth">Réenvoyer</string>
+    <string name="hint_phone_number">Numéro de téléphone</string>
+    <string name="hint_verification_code">Code de vérification</string>
+    <string name="status_code_sent">Code envoyé</string>
+    <string name="status_verification_failed">Échec de la vérification</string>
+    <string name="status_verification_succeeded">Vérification réussie</string>
+    <string name="status_sign_in_failed">Échec de l\'authentification</string>
+    <string name="instant_validation">(validation instantanée)</string>
+
+    <string name="firebase_status_fmt">Utilisateur Firebase: %s</string>
+    <string name="firebase_user_management">Gestion des utilisateurs Firebase</string>
+
+    <string name="google_status_fmt">Usager Google: %s</string>
+    <string name="google_title_text">Authentification Google</string>
+
+    <string name="status_email_not_sent">Envoyé un courriel à votre email pour débuter.</string>
+    <string name="status_email_sent">Courriel envoyé, vérifier votre compte email.</string>
+    <string name="status_link_found">Lien reçu, entrer votre email pour continuer.</string>
+
+    <string name="phone_title_text">Numéro de téléphone</string>
+
+    <string name="firebaseui_status_fmt">Utilisateur Firebase : %s</string>
+    <string name="firebaseui_title_text">Authentification avec FirebaseUI</string>
+
+    <string name="id_fmt">ID d\'usager: %s</string>
+    <string name="email_fmt">Email: %s</string>
+    <string name="news_articles">Nouvelles et articles</string>
+    <string name="play_button">play_button</string>
+    <string name="transit_button">transit_button</string>
+</resources>

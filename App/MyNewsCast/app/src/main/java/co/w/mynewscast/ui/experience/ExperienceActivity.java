@@ -61,19 +61,22 @@ public class ExperienceActivity extends BaseActivity implements ExperienceMvpVie
 
     @Override
     public void taskCompletionResult(String result) {
+        if (result != null) {
 
-        try {
-            JSONArray jsonArray = new JSONArray(result);
-            int curSize = experienceArticleAdapter.getItemCount();
+            try {
+                JSONArray jsonArray = new JSONArray(result);
+                int curSize = experienceArticleAdapter.getItemCount();
 
-            for (int i = 0; i < jsonArray.length(); ++i) {
-                JSONObject articleJson = jsonArray.getJSONObject(i);
-                experienceArticleList.add(new Article(articleJson));
+                for (int i = 0; i < jsonArray.length(); ++i) {
+                    JSONObject articleJson = jsonArray.getJSONObject(i);
+                    experienceArticleList.add(new Article(articleJson));
+                }
+
+
+                experienceArticleAdapter.notifyItemRangeChanged(curSize, jsonArray.length());
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-
-            experienceArticleAdapter.notifyItemRangeChanged(curSize, jsonArray.length());
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 
