@@ -8,13 +8,16 @@
         <menu>
             <item
                 android:id="@+id/nav_queue"
-                android:title="Queue" />
+                android:title="Queue"
+                android:background="?android:attr/selectableItemBackgroundBorderless"/>
             <item
                 android:id="@+id/nav_settings"
-                android:title="Settings" />
+                android:title="Settings"
+                android:background="?android:attr/selectableItemBackgroundBorderless"/>
             <item
                 android:id="@+id/nav_signout"
-                android:title="Sign Out" />
+                android:title="Sign Out"
+                android:background="?android:attr/selectableItemBackgroundBorderless"/>
         </menu>
     </item>
 </menu>
