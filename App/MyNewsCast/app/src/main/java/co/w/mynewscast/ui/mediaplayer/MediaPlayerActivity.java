@@ -9,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +37,7 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
     String mediaURL = "http://40.76.47.167/api/content/summary/audio/fr/1150647";
 
     @Inject
-    MediaPlayerPresenter meMediaPlayerPresenter;
+    MediaPlayerPresenter mMediaPlayerPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,7 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
         activityComponent().inject(this);
         setContentView(R.layout.media_player);
 
-        meMediaPlayerPresenter.attachView(this);
+        mMediaPlayerPresenter.attachView(this);
 
         forwardButton = (ImageButton) findViewById(R.id.media_ff);
         pauseButton = (ImageButton) findViewById(R.id.media_pause);
@@ -133,7 +132,7 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
     protected void onDestroy() {
         super.onDestroy();
 
-        meMediaPlayerPresenter.detachView();
+        mMediaPlayerPresenter.detachView();
     }
 
     @Override

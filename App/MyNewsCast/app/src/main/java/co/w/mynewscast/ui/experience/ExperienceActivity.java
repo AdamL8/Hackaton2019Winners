@@ -29,6 +29,7 @@ import co.w.mynewscast.model.Article;
 import co.w.mynewscast.ui.base.BaseActivity;
 import co.w.mynewscast.ui.main.MainActivity;
 import co.w.mynewscast.ui.mediaplayer.MediaPlayerActivity;
+import co.w.mynewscast.ui.videoplayer.VideoPlayerActivity;
 import co.w.mynewscast.utils.TaskDelegate;
 
 public class ExperienceActivity extends BaseActivity implements ExperienceMvpView, TaskDelegate, View.OnClickListener {
@@ -100,7 +101,7 @@ public class ExperienceActivity extends BaseActivity implements ExperienceMvpVie
             startActivity(new Intent(this, MediaPlayerActivity.class));
         } else if (i == R.id.videoButton)
         {
-            // TODO
+            startActivity(new Intent(this, VideoPlayerActivity.class));
         }
     }
 

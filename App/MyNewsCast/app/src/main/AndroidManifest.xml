@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".ui.signin.SignInActivity" />
         <activity android:name=".ui.experience.ExperienceActivity" />
+        <activity android:name=".ui.videoplayer.VideoPlayerActivity" android:configChanges="orientation" />
         <activity android:name=".ui.mediaplayer.MediaPlayerActivity" android:screenOrientation="portrait" />
 
     </application>
