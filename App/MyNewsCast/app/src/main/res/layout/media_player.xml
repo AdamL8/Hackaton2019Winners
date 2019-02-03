@@ -51,7 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"
             android:onClick="rewind"
-            android:src="@android:drawable/ic_media_rew" />
+            android:src="@android:drawable/ic_media_rew"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
         <ImageButton
             android:id="@+id/media_pause"
@@ -59,7 +60,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"
             android:onClick="pause"
-            android:src="@android:drawable/ic_media_pause" />
+            android:src="@android:drawable/ic_media_pause"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
         <ImageButton
             android:id="@+id/media_play"
@@ -67,7 +69,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"
             android:onClick="play"
-            android:src="@android:drawable/ic_media_play" />
+            android:src="@android:drawable/ic_media_play"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
         <ImageButton
             android:id="@+id/media_ff"
@@ -75,7 +78,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"
             android:onClick="forward"
-            android:src="@android:drawable/ic_media_ff" />
+            android:src="@android:drawable/ic_media_ff"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
     </LinearLayout>
 
 </LinearLayout>

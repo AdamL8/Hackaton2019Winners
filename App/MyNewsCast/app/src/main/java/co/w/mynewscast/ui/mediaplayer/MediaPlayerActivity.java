@@ -110,8 +110,7 @@ public class MediaPlayerActivity extends BaseActivity implements MediaPlayerMvpV
 
     @Override
     public void rewind() {
-        //check if we can go forward at forwardTime seconds before song endes
-        if ((timeElapsed - forwardTime) >= finalTime) {
+        if ((timeElapsed - forwardTime) >= 0) {
             timeElapsed = timeElapsed - forwardTime;
 
             //seek to the exact second of the track

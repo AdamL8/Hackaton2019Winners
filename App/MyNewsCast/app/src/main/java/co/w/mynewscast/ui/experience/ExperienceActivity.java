@@ -46,7 +46,8 @@ public class ExperienceActivity extends BaseActivity implements ExperienceMvpVie
         activityComponent().inject(this);
         setContentView(R.layout.content_experience);
 
-        findViewById(R.id.playButton).setOnClickListener(this);
+        findViewById(R.id.podcastButton).setOnClickListener(this);
+        findViewById(R.id.videoButton).setOnClickListener(this);
 
         experienceArticleAdapter = new ExperienceArticleAdapter(this, experienceArticleList);
         experienceArticleRecyclerView = findViewById(R.id.experience_list_view);
@@ -95,8 +96,11 @@ public class ExperienceActivity extends BaseActivity implements ExperienceMvpVie
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.playButton) {
+        if (i == R.id.podcastButton) {
             startActivity(new Intent(this, MediaPlayerActivity.class));
+        } else if (i == R.id.videoButton)
+        {
+            // TODO
         }
     }
 
