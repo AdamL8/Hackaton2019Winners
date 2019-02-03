@@ -144,9 +144,21 @@ def get_sentences(content):
 def get_tasks_en():
     return jsonify(DATA_CBC)
 
+@app.route('/api/content/info/en/<id>', methods=['GET'])
+def get_content_info_en(id):
+    value = list(filter(lambda x: int(x['id']) == int(id), DATA_CBC))
+
+    return jsonify(value)
+
 @app.route('/api/content/fr', methods=['GET'])
 def get_tasks_fr():
     return jsonify(DATA_RADIOCAN)
+
+@app.route('/api/content/info/fr/<id>', methods=['GET'])
+def get_content_info_fr(id):
+    value = list(filter(lambda x: int(x['id']) == int(id), DATA_RADIOCAN))
+
+    return jsonify(value)
 
 @app.route('/api/content/en/<id>', methods=['GET'])
 def get_content_en(id):
