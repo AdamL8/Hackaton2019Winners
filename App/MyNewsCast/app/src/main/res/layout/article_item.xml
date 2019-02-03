@@ -33,9 +33,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/thumbnail"
+                android:ellipsize="end"
+                android:gravity="center"
                 android:paddingLeft="@dimen/album_title_padding"
-                android:paddingRight="@dimen/album_title_padding"
                 android:paddingTop="@dimen/album_title_padding"
+                android:paddingRight="@dimen/album_title_padding"
+                android:paddingBottom="@dimen/album_title_padding"
+                android:scrollHorizontally="true"
                 android:textColor="@color/album_title"
                 android:textSize="@dimen/album_title" />
 
