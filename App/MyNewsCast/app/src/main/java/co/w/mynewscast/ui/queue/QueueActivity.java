@@ -1,7 +1,14 @@
 package co.w.mynewscast.ui.queue;
 
+import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -12,6 +19,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,16 +30,25 @@ import co.w.mynewscast.R;
 import co.w.mynewscast.model.Article;
 import co.w.mynewscast.model.ArticleFirebaseModel;
 import co.w.mynewscast.ui.base.BaseActivity;
+import co.w.mynewscast.ui.experience.ExperienceActivity;
+import co.w.mynewscast.ui.experience.ExperienceArticleAdapter;
+import co.w.mynewscast.ui.main.ArticleAdapter;
+import co.w.mynewscast.utils.QueryHelper;
+import co.w.mynewscast.utils.RecyclerViewUtils;
+import co.w.mynewscast.utils.TaskDelegate;
 
-public class QueueActivity extends BaseActivity {
+public class QueueActivity extends BaseActivity implements TaskDelegate {
 
     private FirebaseUser user;
 
     private DatabaseReference mDatabase;
     private DatabaseReference mArticleQueueReference;
     private ChildEventListener mArticleQueueListener;
+    private ArticleAdapter mArticleAdapter;
+    private RecyclerView queueArticleRecyclerView;
 
-    private List<ArticleFirebaseModel> articleList = new ArrayList<>();
+    private List<ArticleFirebaseModel> firebaseArticleList = new ArrayList<>();
+    private List<Article> queueArticleList = new ArrayList<>();
 
     private static final String TAG = "QueueActivity";
 
@@ -40,6 +60,19 @@ public class QueueActivity extends BaseActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mArticleQueueReference = FirebaseDatabase.getInstance().getReference("queue");
         user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        mArticleAdapter = new ArticleAdapter(this, queueArticleList);
+        queueArticleRecyclerView = findViewById(R.id.queue_list_view);
+
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
+        queueArticleRecyclerView.setLayoutManager(mLayoutManager);
+
+        queueArticleRecyclerView.addItemDecoration(new RecyclerViewUtils.GridSpacingItemDecoration(1, RecyclerViewUtils.dpToPx(1, QueueActivity.this), true));
+        queueArticleRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        queueArticleRecyclerView.setAdapter(mArticleAdapter);
+
     }
 
     @Override
@@ -52,15 +85,12 @@ public class QueueActivity extends BaseActivity {
                 // A new message has been added
                 // onChildAdded() will be called for each node at the first time
                 ArticleFirebaseModel article = dataSnapshot.getValue(ArticleFirebaseModel.class);
-                articleList.add(article);
+                firebaseArticleList.add(article);
 
                 Log.e(TAG, "onChildAdded:" + article.id);
 
-                ArticleFirebaseModel latest = articleList.get(articleList.size() - 1);
-
-//                tvAuthor.setText(latest.author);
-//                tvTime.setText(latest.time);
-//                tvBody.setText(latest.body);
+                ArticleFirebaseModel latest = firebaseArticleList.get(firebaseArticleList.size() - 1);
+                QueryHelper.getArticle(latest.lang, latest.id, QueueActivity.this);
             }
 
             @Override
@@ -103,6 +133,21 @@ public class QueueActivity extends BaseActivity {
         mArticleQueueListener = childEventListener;
     }
 
+    @Override
+    public void taskCompletionResult(String result) {
+        if (result != null) {
+
+            try {
+                JSONObject articleJson = new JSONObject(result);
+                queueArticleList.add(new Article(articleJson));
+
+                mArticleAdapter.notifyItemInserted(queueArticleList.size() - 1);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 //    @Override
 //    protected void onStop() {
 //        super.onStop();
@@ -111,7 +156,7 @@ public class QueueActivity extends BaseActivity {
 //            mArticleQueueReference.removeEventListener(mArticleQueueListener);
 //        }
 //
-//        for (Article article: articleList) {
+//        for (Article article: firebaseArticleList) {
 //            Log.e(TAG, "listItem: " + article.Id);
 //        }
 //    }
