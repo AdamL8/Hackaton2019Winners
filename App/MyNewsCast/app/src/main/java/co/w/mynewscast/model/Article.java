@@ -5,7 +5,9 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Article {
+import java.io.Serializable;
+
+public class Article implements Serializable {
 
     public String CategoryName;
     public String Description;
@@ -13,6 +15,7 @@ public class Article {
     public String Url;
     public String Image;
     public Integer Id;
+    public boolean IsSelected = false;
 
     public Article() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)

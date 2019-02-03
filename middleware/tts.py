@@ -34,18 +34,10 @@ def tts(text, lang="en"):
     voice.text = text
     body = ElementTree.tostring(xml_body)
 
-    completed = False
+    response = requests.post(constructed_url, headers=headers, data=body)
 
-    while not completed:
-
-        response = requests.post(constructed_url, headers=headers, data=body)
-
-        if response.status_code == 200:
-            completed = True
-            return response.content
-        else:
-            print("\nStatus code: " + str(response.status_code) + "\nSomething went wrong. Sleeping and retrying\n")
-            time.sleep(0.5)
-
-            
-            #return None
+    if response.status_code == 200:
+        completed = True
+        return response.content
+    else:
+        print("\nStatus code: " + str(response.status_code) + "\nSomething went wrong. Sleeping and retrying\n")
