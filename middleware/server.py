@@ -173,23 +173,23 @@ def get_tts_fr(id):
 
 def writeWave(id, sentences, lang):
     response = []
-    dirPath = id + '-%%-' + str(uuid.uuid4())
-    if not os.path.isdir(dirPath):
-        os.makedirs(dirPath)
+
+    if not os.path.isdir(id):
+        os.makedirs(id)
 
     index = 0
     for sentence in sentences:
         waveName = id + '_' + str(index)+ '.wav'
-        wavePath = dirPath + '/' + waveName
+        wavePath = id + '/' + waveName
         with open(wavePath, 'wb') as audio:
             audio.write(tts(sentence, lang))
 
         subtitleName = id + '_' + str(index) + '.txt'
-        subtitlePath = dirPath + '/' + subtitleName
+        subtitlePath = id + '/' + subtitleName
         with open(subtitlePath, "w") as subtitle:
             subtitle.write(sentence)
 
-        response.append({"sentenceId":index, "newsId": id, "dirPath": os.getcwd() + '/' + dirPath, "wave": waveName, "text": sentence})
+        response.append({"sentenceId": index, "newsId": id, "dirPath": os.getcwd() + '/' + id, "wave": waveName, "text": sentence})
         index += 1
 
     return response
@@ -226,15 +226,17 @@ def writeWaveArrays(id, sentences, lang):
 # wav and text download
 @app.route('/audio_dump/<path:path>')
 def send_audio(path):
-    path = '/' + path
-    splitted = path.split('-%%-')
+    splittedPath = path.split('/')
+    folderPath = '/'
 
-    splitted2 = splitted[1].split('/')
+    i = 0
+    while i < len(splittedPath) -1:
+        folderPath += splittedPath[i] + '/'
+        i += 1
 
-    folder = splitted[0] + '-%%-' + splitted2[0]
-    fileName = splitted2[1]
-
-    return send_from_directory(folder, fileName)
+    fileName = splittedPath[len(splittedPath) -1]
+    
+    return send_from_directory(folderPath, fileName)
 
 if __name__ == '__main__':
     print ('Debug mode is: %r' % (DEBUG_MODE) )
