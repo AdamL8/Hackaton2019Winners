@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.signin.SignInActivity" />
+        <activity android:name=".ui.experience.ExperienceActivity" />
 
     </application>
 
