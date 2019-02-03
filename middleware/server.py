@@ -4,16 +4,15 @@ import time
 import logging
 import threading
 import requests
-from flask import Flask, jsonify, make_response, send_from_directory
+from flask import Flask, jsonify, make_response, send_from_directory, request
 import schedule
 import html2text
 import re
 from tts import tts
 from textToSentence import split_into_sentences
+from recommendation import get_closest
 import wave
-import uuid
 from video_content import generateVideoAndAudioFromImagesToFile, getAllMediaUrlsFromContentId
-import os.path
 from summarizer import convertTextToSummary 
 
 DEBUG_MODE = 'DEBUG' in os.environ
@@ -176,6 +175,30 @@ def get_summary_content_audio_fr(id):
     response = make_response(tts(convertTextToSummary(convertTextToSummary(get_radiocan_content(id)['content'])), "fr"))
     response.headers['Content-Type'] = 'audio/wav'
     return response
+
+@app.route('/api/recommendation/fr', methods=['GET'])
+def get_recommendation_fr():
+    ids = request.args.get('ids')
+    categoryIds = request.args.get('categoryIds')
+    if categoryIds is not None and categoryIds != "":
+        categoryIds = list(map(int, categoryIds.split(",")))
+    else:
+        categoryIds = []
+    if ids is not None and ids != "":
+        ids = ids.split(",")
+        for i in ids:
+            for j in DATA_RADIOCAN:
+                if j['id'] == i:
+                    categoryIds.append(int(j['categoryId']))
+    if len(categoryIds) > 0:
+        next_catId = int(get_closest(categoryIds))
+        recommended_news = []
+        categoryIds.append(next_catId)
+        for i in DATA_RADIOCAN:
+            if int(i['categoryId']) in categoryIds:
+                recommended_news.append(i['id'])
+        return jsonify({"recommendedCategory": next_catId, "recommendedNews": recommended_news})
+    return jsonify({})
 
 # TTS routes
 @app.route('/api/audio/en/<id>')
