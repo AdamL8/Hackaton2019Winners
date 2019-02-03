@@ -16,8 +16,7 @@ from video_content import generateVideoAndAudioFromImagesToFile, getAllMediaUrls
 import os.path
 from summarizer import convertTextToSummary 
 
-#DEBUG_MODE = 'DEBUG' in os.environ
-DEBUG_MODE = True
+DEBUG_MODE = 'DEBUG' in os.environ
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
