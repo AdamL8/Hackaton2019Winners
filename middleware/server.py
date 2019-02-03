@@ -183,13 +183,13 @@ def get_summary_content_fr(id):
 
 @app.route('/api/content/summary/audio/en/<id>', methods=['GET'])
 def get_summary_content_audio_en(id):
-    response = make_response(tts(convertTextToSummary(convertTextToSummary(get_cbc_content(id)['content'])), "en"))
+    response = make_response(tts(convertTextToSummary(get_cbc_content(id)['content'])), "en")
     response.headers['Content-Type'] = 'audio/wav'
     return response
 
 @app.route('/api/content/summary/audio/fr/<id>', methods=['GET'])
 def get_summary_content_audio_fr(id):
-    response = make_response(tts(convertTextToSummary(convertTextToSummary(get_radiocan_content(id)['content'])), "fr"))
+    response = make_response(tts(convertTextToSummary(get_radiocan_content(id)['content'])), "fr")
     response.headers['Content-Type'] = 'audio/wav'
     return response
 
