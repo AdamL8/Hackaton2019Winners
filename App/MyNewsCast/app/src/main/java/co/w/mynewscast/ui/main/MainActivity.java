@@ -87,16 +87,19 @@ public class MainActivity extends BaseActivity implements MainMvpView,
     @Override
     public void taskCompletionResult(String result) {
 
-        try {
-            
-            JSONArray jsonArray = new JSONArray(result);
+        if (result != null) {
 
-            for (int i=0; i < jsonArray.length(); i++) {
-                JSONObject articleJson = jsonArray.getJSONObject(i);
-                articleList.add(new Article(articleJson));
+            try {
+                JSONArray jsonArray = new JSONArray(result);
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject articleJson = jsonArray.getJSONObject(i);
+                    articleList.add(new Article(articleJson));
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 

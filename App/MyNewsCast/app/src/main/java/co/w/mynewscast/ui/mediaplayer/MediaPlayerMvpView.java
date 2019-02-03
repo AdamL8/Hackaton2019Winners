@@ -7,4 +7,8 @@ public interface MediaPlayerMvpView extends MvpView {
     void play();
 
     void pause();
+
+    void rewind();
+
+    void forward();
 }
