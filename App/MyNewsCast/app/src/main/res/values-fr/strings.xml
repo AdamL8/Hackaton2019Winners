@@ -46,9 +46,6 @@
     <string name="status_sign_in_failed">Échec de l\'authentification</string>
     <string name="instant_validation">(validation instantanée)</string>
 
-    <string name="action_play_next">Jouer prochain</string>
-    <string name="backdrop_subtitle"><Y></Y></string>
-
     <string name="firebase_status_fmt">Utilisateur Firebase: %s</string>
     <string name="firebase_user_management">Gestion des utilisateurs Firebase</string>
 
@@ -70,8 +67,9 @@
     <string name="play_button">play_button</string>
     <string name="transit_button">transit_button</string>
 
-    <string name="back"><![CDATA[<]]></string>
-    <string name="rewind"><![CDATA[<<]]></string>
-    <string name="forward"><![CDATA[>>]]></string>
-    <string name="pause">||</string>
+    <string name="settings_tips">Click for activity restart\nLong click for application restart</string>
+    <string name="french">Francais</string>
+    <string name="english">Anglais</string>
+
+    <string name="hello">Bonjour\n%s</string>
 </resources>
