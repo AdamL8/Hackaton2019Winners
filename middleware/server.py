@@ -14,6 +14,7 @@ from recommendation import get_closest
 import wave
 from video_content import generateVideoAndAudioFromImagesToFile, getAllMediaUrlsFromContentId
 from summarizer import convertTextToSummary 
+import json
 
 DEBUG_MODE = 'DEBUG' in os.environ
 
@@ -147,8 +148,10 @@ def get_tasks_en():
 @app.route('/api/content/info/en/<id>', methods=['GET'])
 def get_content_info_en(id):
     value = list(filter(lambda x: int(x['id']) == int(id), DATA_CBC))
-
-    return jsonify(value)
+    if len(value) == 1:
+        return jsonify(value[0])
+    else:
+        return jsonify({})
 
 @app.route('/api/content/fr', methods=['GET'])
 def get_tasks_fr():
@@ -157,8 +160,10 @@ def get_tasks_fr():
 @app.route('/api/content/info/fr/<id>', methods=['GET'])
 def get_content_info_fr(id):
     value = list(filter(lambda x: int(x['id']) == int(id), DATA_RADIOCAN))
-
-    return jsonify(value)
+    if len(value) == 1:
+        return jsonify(value[0])
+    else:
+        return jsonify({})
 
 @app.route('/api/content/en/<id>', methods=['GET'])
 def get_content_en(id):
