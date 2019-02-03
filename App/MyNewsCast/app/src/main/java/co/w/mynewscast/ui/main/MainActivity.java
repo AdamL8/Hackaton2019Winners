@@ -1,6 +1,5 @@
 package co.w.mynewscast.ui.main;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -8,9 +7,7 @@ import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,6 +20,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,29 +33,28 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.net.URLEncoder;
 
 import javax.inject.Inject;
 
 import co.w.mynewscast.R;
 import co.w.mynewscast.model.Article;
 import co.w.mynewscast.ui.base.BaseActivity;
+import co.w.mynewscast.ui.experience.ExperienceActivity;
 import co.w.mynewscast.ui.signin.SignInActivity;
 import co.w.mynewscast.utils.DialogFactory;
 import co.w.mynewscast.utils.TaskDelegate;
 
 public class MainActivity extends BaseActivity implements MainMvpView,
-        NavigationView.OnNavigationItemSelectedListener, TaskDelegate {
+        NavigationView.OnNavigationItemSelectedListener, TaskDelegate, View.OnClickListener {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
             "co.w.mynewscast.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+    private static final int RC_CONTENT_EXPERIENCE = 1;
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
@@ -89,15 +86,8 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
     @Override
     public void taskCompletionResult(String result) {
-        Log.d("Result from articles query", result);
 
         try {
-//            try {
-//                result = URLEncoder.encode(result, "UTF-8");
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            }
-
             JSONArray jsonArray = new JSONArray(result);
 
             for (int i=0; i < jsonArray.length(); i++) {
@@ -186,8 +176,10 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         return true;
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
         setContentView(R.layout.activity_main);
@@ -195,28 +187,30 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         toolbar.setTitle(R.string.news_articles);
         setSupportActionBar(toolbar);
 
+
+        // Button listeners
+        findViewById(R.id.newspaper).setOnClickListener(this);
+
         mArticleAdapter = new ArticleAdapter(this, articleList);
         articleRecyclerView = findViewById(R.id.recycler_view);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         articleRecyclerView.setLayoutManager(mLayoutManager);
+
         articleRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         articleRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
         articleRecyclerView.setAdapter(mArticleAdapter);
 
         loadArticles();
 
         mMainPresenter.attachView(this);
 
-//        //get firebase auth instance
+        //get firebase auth instance
 //        auth = FirebaseAuth.getInstance();
 //
 //        //get current user
 //        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//
-//        {
-//            //startActivity(new Intent(MainActivity.this, SignInActivity.class));
-//        }
 //
 //        authListener = new FirebaseAuth.AuthStateListener() {
 //            @Override
@@ -243,6 +237,14 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.newspaper) {
+            contentExperience();
+        }
     }
 
     @Override
@@ -311,6 +313,12 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    // [START contentExperience]
+    public void contentExperience() {
+        startActivityForResult(new Intent(this, ExperienceActivity.class),RC_CONTENT_EXPERIENCE);
+    }
+    // [END contentExperience]
 
     /***** MVP View methods implementation *****/
 
