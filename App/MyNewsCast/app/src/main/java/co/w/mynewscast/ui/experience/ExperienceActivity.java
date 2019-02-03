@@ -20,11 +20,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import co.w.mynewscast.R;
+import co.w.mynewscast.model.ActicleListSerializable;
 import co.w.mynewscast.model.Article;
 import co.w.mynewscast.ui.base.BaseActivity;
 import co.w.mynewscast.ui.mediaplayer.MediaPlayerActivity;
 import co.w.mynewscast.ui.queue.QueueActivity;
 import co.w.mynewscast.ui.videoplayer.VideoPlayerActivity;
+import co.w.mynewscast.utils.PreferenceUtils;
 import co.w.mynewscast.utils.QueryHelper;
 import co.w.mynewscast.utils.RecyclerViewUtils;
 import co.w.mynewscast.utils.TaskDelegate;
@@ -65,7 +67,7 @@ public class ExperienceActivity extends BaseActivity implements ExperienceMvpVie
 
     private void loadArticles()
     {
-        QueryHelper.getArticles("fr", this);
+        QueryHelper.getArticles(PreferenceUtils.getSelectedLanguageId(), this);
     }
 
     @Override
@@ -100,7 +102,12 @@ public class ExperienceActivity extends BaseActivity implements ExperienceMvpVie
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.podcastButton) {
-            startActivity(new Intent(this, MediaPlayerActivity.class));
+            ActicleListSerializable listSerializable = new ActicleListSerializable(experienceArticleList);
+
+            Intent intent = new Intent(this, MediaPlayerActivity.class);
+            intent.putExtra("ArticleList", listSerializable);
+
+            startActivity(intent);
         } else if (i == R.id.videoButton)
         {
             startActivity(new Intent(this, VideoPlayerActivity.class));

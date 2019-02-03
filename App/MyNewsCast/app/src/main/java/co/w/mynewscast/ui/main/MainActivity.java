@@ -55,6 +55,7 @@ import co.w.mynewscast.ui.queue.QueueActivity;
 import co.w.mynewscast.ui.settings.SettingsActivity;
 import co.w.mynewscast.ui.signin.SignInActivity;
 import co.w.mynewscast.utils.DialogFactory;
+import co.w.mynewscast.utils.PreferenceUtils;
 import co.w.mynewscast.utils.QueryHelper;
 import co.w.mynewscast.utils.RecyclerViewUtils;
 import co.w.mynewscast.utils.TaskDelegate;
@@ -91,7 +92,7 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
     private void loadArticles()
     {
-        QueryHelper.getArticles("fr", this);
+        QueryHelper.getArticles(PreferenceUtils.getSelectedLanguageId(), this);
     }
 
     @Override

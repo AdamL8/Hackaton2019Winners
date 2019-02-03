@@ -140,7 +140,7 @@ public class QueueActivity extends BaseActivity implements TaskDelegate {
             try {
                 JSONObject articleJson = new JSONObject(result);
                 queueArticleList.add(new Article(articleJson));
-
+                Log.e(TAG, "Filled a card for article " + queueArticleList.get(queueArticleList.size() - 1).Id);
                 mArticleAdapter.notifyItemInserted(queueArticleList.size() - 1);
             } catch (JSONException e) {
                 e.printStackTrace();
