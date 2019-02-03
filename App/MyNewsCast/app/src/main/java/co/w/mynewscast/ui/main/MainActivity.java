@@ -23,6 +23,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,14 +36,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.net.URLEncoder;
 
 import javax.inject.Inject;
 
@@ -54,7 +52,7 @@ import co.w.mynewscast.utils.DialogFactory;
 import co.w.mynewscast.utils.TaskDelegate;
 
 public class MainActivity extends BaseActivity implements MainMvpView,
-        NavigationView.OnNavigationItemSelectedListener, TaskDelegate {
+        NavigationView.OnNavigationItemSelectedListener, TaskDelegate, View.OnClickListener {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
             "co.w.mynewscast.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
@@ -186,8 +184,15 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         return true;
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        // Button listeners
+        findViewById(R.id.newspaper).setOnClickListener(this);
+
+
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
         setContentView(R.layout.activity_main);
@@ -243,6 +248,14 @@ public class MainActivity extends BaseActivity implements MainMvpView,
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.newspaper) {
+            contentExperience();
+        }
     }
 
     @Override
@@ -311,6 +324,13 @@ public class MainActivity extends BaseActivity implements MainMvpView,
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    // [START contentExperience]
+    @Override
+    public void contentExperience() {
+        startActivityForResult(new Intent(this, contentExperienceActivity.class),"CONTENT_EXPERIENCE");
+    }
+    // [END contentExperience]
 
     /***** MVP View methods implementation *****/
 
