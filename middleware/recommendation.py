@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import schedule
 
 df = pd.read_csv('./user-theme.csv', header=None, usecols=[0, 1])
 
@@ -22,12 +23,16 @@ def transform_user(array_of_themes):
 for i in range(len(groups)):
     npgroups[i,:] = transform_user(groups[i])
 
+def shuffle_it():
+    np.random.shuffle(npgroups)
+
+schedule.every(5).minutes.do(shuffle_it)
 
 # Array of liked / listened themes (ex: [20, 19, 16, 18]) 
 # return best next theme to listen to
 def get_closest(liked_themes):
     one_hotted = transform_user(liked_themes)
-    s = np.vstack([one_hotted, npgroups])
+    s = np.vstack([one_hotted, npgroups[::2]])
     simili = cosine_similarity(s, s)
     closest = npgroups[np.argmax(simili[0][np.nonzero(simili[0]-1)])-1]
     return np.argmax(closest - one_hotted)
